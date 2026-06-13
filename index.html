@@ -222,6 +222,50 @@
     .part-num { width: 42px; height: 42px; font-size: 16px; border-radius: 12px; }
     .part-title { font-size: 15px; }
   }
+
+  /* ── INSTALL BANNER ── */
+  .install-banner {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+    background: var(--surface);
+    border-top: 1.5px solid var(--border);
+    box-shadow: 0 -4px 24px rgba(79,70,229,0.15);
+    padding: 14px 20px;
+    display: flex; align-items: center; gap: 14px;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .install-banner.show { transform: translateY(0); }
+  .install-banner-icon {
+    width: 46px; height: 46px; border-radius: 12px; flex-shrink: 0;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .install-banner-text { flex: 1; }
+  .install-banner-text .ib-title {
+    font-family: var(--font-en); font-size: 14px; font-weight: 700;
+    color: var(--text); margin-bottom: 2px;
+  }
+  .install-banner-text .ib-sub {
+    font-size: 12px; color: var(--text3); font-family: var(--font-en);
+  }
+  .install-banner-actions { display: flex; gap: 8px; flex-shrink: 0; }
+  .ib-install-btn {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: #fff; border: none; border-radius: 50px;
+    padding: 9px 18px; font-family: var(--font-en);
+    font-size: 13px; font-weight: 700; cursor: pointer;
+    white-space: nowrap; transition: 0.2s;
+  }
+  .ib-install-btn:hover { opacity: 0.9; transform: scale(1.03); }
+  .ib-close-btn {
+    background: var(--surface2); border: 1.5px solid var(--border);
+    color: var(--text3); border-radius: 50%;
+    width: 34px; height: 34px; font-size: 16px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: 0.2s;
+  }
+  .ib-close-btn:hover { background: var(--border); }
 </style>
 </head>
 <body>
@@ -295,6 +339,19 @@
   </div>
 </div>
 
+<!-- INSTALL BANNER -->
+<div class="install-banner" id="installBanner">
+  <div class="install-banner-icon">📘</div>
+  <div class="install-banner-text">
+    <div class="ib-title">App হিসেবে Install করুন</div>
+    <div class="ib-sub">Offline-এও কাজ করবে · Home Screen-এ পাবেন</div>
+  </div>
+  <div class="install-banner-actions">
+    <button class="ib-install-btn" id="installBtn">📲 Install</button>
+    <button class="ib-close-btn" id="closeBtn">✕</button>
+  </div>
+</div>
+
 <!-- FOOTER -->
 <footer>
   Made with ❤️ using <span>Claude AI</span> · সম্পূর্ণ বিনামূল্যে
@@ -309,6 +366,50 @@
   }
   applyTheme();
   function toggleTheme() { dark = !dark; applyTheme(); }
+
+  // ── INSTALL BANNER LOGIC ──
+  let deferredPrompt = null;
+  const banner  = document.getElementById('installBanner');
+  const installBtn = document.getElementById('installBtn');
+  const closeBtn   = document.getElementById('closeBtn');
+
+  // Already installed? hide forever
+  if (localStorage.getItem('pwa-installed') === 'yes' ||
+      localStorage.getItem('pwa-dismissed') === 'yes') {
+    banner.style.display = 'none';
+  }
+
+  // Browser fires this when PWA is installable
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    // Show banner after 1.5s delay
+    setTimeout(() => banner.classList.add('show'), 1500);
+  });
+
+  // Install button clicked
+  installBtn.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      localStorage.setItem('pwa-installed', 'yes');
+      banner.classList.remove('show');
+    }
+    deferredPrompt = null;
+  });
+
+  // Close button clicked
+  closeBtn.addEventListener('click', () => {
+    banner.classList.remove('show');
+    localStorage.setItem('pwa-dismissed', 'yes');
+  });
+
+  // Already installed as PWA
+  window.addEventListener('appinstalled', () => {
+    localStorage.setItem('pwa-installed', 'yes');
+    banner.classList.remove('show');
+  });
 </script>
 <script>
 if ("serviceWorker" in navigator && location.protocol === "https:") {
