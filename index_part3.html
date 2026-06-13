@@ -1,0 +1,1723 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0f172a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ProgramDict">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Programming Dictionary – Bangla | Part 3</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f8fc;
+    --surface: #ffffff;
+    --surface2: #f0f2fa;
+    --border: #e2e5f0;
+    --text: #1a1d2e;
+    --text2: #4a4f6a;
+    --text3: #7c82a0;
+    --s7: #1d9bf0;
+    --s7bg: #e0f2fe;
+    --s7dark: #0369a1;
+    --s8: #10b981;
+    --s8bg: #d1fae5;
+    --s8dark: #065f46;
+    --s9: #a855f7;
+    --s9bg: #f3e8ff;
+    --s9dark: #6b21a8;
+    --s10a: #f59e0b;
+    --s10b: #ef4444;
+    --accent: #4f46e5;
+    --accent2: #7c3aed;
+    --shadow: 0 2px 16px rgba(79,70,229,0.08);
+    --shadow-lg: 0 8px 40px rgba(79,70,229,0.13);
+    --radius: 14px;
+    --radius-sm: 8px;
+    --font-bn: 'Noto Serif Bengali', serif;
+    --font-en: 'Inter', sans-serif;
+    --font-code: 'Fira Code', monospace;
+  }
+  [data-theme="dark"] {
+    --bg: #0f1117;
+    --surface: #1a1d2e;
+    --surface2: #232640;
+    --border: #2e3250;
+    --text: #e8eaf6;
+    --text2: #b0b8d8;
+    --text3: #6e78a0;
+    --s7bg: #0c2233;
+    --s8bg: #052e1c;
+    --s9bg: #1e0a3c;
+    --shadow: 0 2px 16px rgba(0,0,0,0.3);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.4);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-bn);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    transition: background 0.3s, color 0.3s;
+    min-height: 100vh;
+  }
+
+  /* ── TOP NAV ── */
+  .topnav {
+    position: sticky; top: 0; z-index: 999;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    padding: 0 16px;
+    display: flex; align-items: center; gap: 10px;
+    height: 58px;
+  }
+  .topnav .logo {
+    font-family: var(--font-en); font-weight: 700; font-size: 17px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    white-space: nowrap;
+  }
+  .topnav .search-wrap { flex: 1; position: relative; }
+  .topnav .search-wrap input {
+    width: 100%; padding: 8px 12px 8px 36px;
+    border: 1.5px solid var(--border); border-radius: 50px;
+    background: var(--surface2); color: var(--text);
+    font-family: var(--font-bn); font-size: 14px;
+    outline: none; transition: border 0.2s;
+  }
+  .topnav .search-wrap input:focus { border-color: var(--accent); }
+  .topnav .search-wrap .si {
+    position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+    color: var(--text3); pointer-events: none; font-size: 15px;
+  }
+  .topnav .theme-btn {
+    background: var(--surface2); border: 1.5px solid var(--border);
+    border-radius: 50%; width: 38px; height: 38px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; color: var(--text2); transition: 0.2s; flex-shrink: 0;
+  }
+  .topnav .theme-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #0c1445 0%, #0f172a 45%, #1a0a2e 100%);
+    color: #fff; padding: 44px 20px 36px;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 15% 50%, rgba(29,155,240,0.25) 0%, transparent 55%),
+      radial-gradient(ellipse at 50% 20%, rgba(16,185,129,0.2) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 60%, rgba(168,85,247,0.25) 0%, transparent 50%);
+  }
+  .hero-content { position: relative; }
+  .hero-badge {
+    display: inline-block; background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2); border-radius: 50px;
+    padding: 5px 16px; font-family: var(--font-en); font-size: 12px;
+    font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+    color: #c4b5fd; margin-bottom: 16px;
+  }
+  .hero h1 { font-size: clamp(20px, 5vw, 34px); font-weight: 700; line-height: 1.3; margin-bottom: 10px; }
+  .hero p { font-size: 15px; color: rgba(255,255,255,0.7); max-width: 520px; margin: 0 auto 22px; }
+  .hero-pills {
+    display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;
+  }
+  .hero-pill {
+    padding: 5px 14px; border-radius: 50px; font-family: var(--font-en);
+    font-size: 12px; font-weight: 700; border: 1.5px solid rgba(255,255,255,0.2);
+  }
+
+  /* ── PROGRESS ── */
+  .progress-wrap {
+    background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 20px;
+  }
+  .progress-top {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 6px; font-size: 13px; color: var(--text2);
+  }
+  .progress-top strong { color: var(--accent); font-family: var(--font-en); }
+  .progress-bar-outer { background: var(--border); border-radius: 50px; height: 8px; overflow: hidden; }
+  .progress-bar-inner {
+    height: 100%; border-radius: 50px;
+    background: linear-gradient(90deg, var(--s7), var(--s8), var(--s9));
+    transition: width 0.5s ease;
+  }
+
+  /* ── JUMP MENU ── */
+  .jump-menu {
+    background: var(--surface2); border-bottom: 1px solid var(--border);
+    padding: 10px 16px; overflow-x: auto; display: flex; gap: 8px; scrollbar-width: none;
+  }
+  .jump-menu::-webkit-scrollbar { display: none; }
+  .jump-btn {
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 50px; padding: 6px 14px; white-space: nowrap;
+    font-size: 12px; font-family: var(--font-en); font-weight: 600;
+    color: var(--text2); cursor: pointer; transition: 0.2s; text-decoration: none;
+  }
+  .jump-btn.s7:hover, .jump-btn.s7.active { background: var(--s7); border-color: var(--s7); color: #fff; }
+  .jump-btn.s8:hover, .jump-btn.s8.active { background: var(--s8); border-color: var(--s8); color: #fff; }
+  .jump-btn.s9:hover, .jump-btn.s9.active { background: var(--s9); border-color: var(--s9); color: #fff; }
+  .jump-btn.s10:hover, .jump-btn.s10.active { background: var(--s10a); border-color: var(--s10a); color: #000; }
+
+  /* ── MAIN ── */
+  .main { max-width: 860px; margin: 0 auto; padding: 24px 16px 80px; }
+  .part-badge { text-align: center; padding: 10px; margin-bottom: 8px; }
+  .part-badge span {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--s7), var(--s9));
+    color: #fff; font-family: var(--font-en); font-size: 12px;
+    font-weight: 700; padding: 5px 18px; border-radius: 50px; letter-spacing: 1px;
+  }
+
+  /* ── SECTION HEADER ── */
+  .section-header {
+    display: flex; align-items: center; gap: 12px;
+    margin: 36px 0 18px; cursor: pointer;
+    background: var(--surface); border-radius: var(--radius);
+    padding: 16px 20px; border: 1.5px solid var(--border);
+    box-shadow: var(--shadow); user-select: none; transition: 0.2s;
+  }
+  .section-header:hover { border-color: var(--accent); }
+  .section-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+  .section-header-text { flex: 1; }
+  .section-header-text h2 { font-size: 17px; font-weight: 700; color: var(--text); }
+  .section-header-text p { font-size: 12px; color: var(--text3); margin-top: 2px; }
+  .section-chevron { color: var(--text3); font-size: 18px; transition: transform 0.3s; }
+  .section-header.open .section-chevron { transform: rotate(180deg); }
+  .section-body { display: none; }
+  .section-body.open { display: block; }
+
+  /* ── TERM CARD ── */
+  .term-card {
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: var(--radius); margin-bottom: 14px;
+    overflow: hidden; box-shadow: var(--shadow);
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+  .term-card:hover { box-shadow: var(--shadow-lg); }
+  .term-card-header {
+    padding: 14px 18px; display: flex; align-items: center; gap: 12px;
+    cursor: pointer; user-select: none;
+  }
+  .term-badge {
+    font-family: var(--font-en); font-size: 11px; font-weight: 700;
+    padding: 3px 10px; border-radius: 50px; white-space: nowrap; flex-shrink: 0;
+  }
+  .term-card-header h3 {
+    font-family: var(--font-en); font-size: 16px; font-weight: 700;
+    color: var(--text); flex: 1;
+  }
+  .term-card-header .bn-title { font-size: 13px; color: var(--text2); font-weight: 600; }
+  .term-chevron { color: var(--text3); font-size: 14px; transition: transform 0.3s; }
+  .term-card.open .term-chevron { transform: rotate(180deg); }
+  .term-body { display: none; padding: 0 18px 18px; }
+  .term-card.open .term-body { display: block; }
+
+  .info-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+  .info-chip {
+    display: flex; align-items: flex-start; gap: 8px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 10px 12px; flex: 1; min-width: 200px;
+  }
+  .info-chip .chip-icon { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+  .info-chip .chip-label {
+    font-family: var(--font-en); font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.5px; color: var(--text3); margin-bottom: 3px;
+  }
+  .info-chip .chip-text { font-size: 13.5px; color: var(--text); line-height: 1.6; }
+
+  .code-block {
+    background: #0f172a; border-radius: var(--radius-sm);
+    padding: 14px 16px; margin: 10px 0; border-left: 3px solid;
+    overflow-x: auto;
+  }
+  .code-block .cb-label {
+    font-family: var(--font-en); font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
+  }
+  .code-block pre { font-family: var(--font-code); font-size: 13px; color: #e2e8f0; white-space: pre-wrap; line-height: 1.6; }
+  .git-block { border-color: var(--s7); }
+  .git-block .cb-label { color: #7dd3fc; }
+  .host-block { border-color: var(--s8); }
+  .host-block .cb-label { color: #6ee7b7; }
+  .ai-block { border-color: var(--s9); }
+  .ai-block .cb-label { color: #d8b4fe; }
+  .ct { color: #7dd3fc; }
+  .cv { color: #86efac; }
+  .cc { color: #fca5a5; }
+  .cp { color: #fdba74; }
+  .cg { color: #6ee7b7; }
+  .ca { color: #d8b4fe; }
+
+  .example-box {
+    background: linear-gradient(135deg, #1e1b4b, #0f172a);
+    border-radius: var(--radius-sm); padding: 12px 14px;
+    border-left: 3px solid var(--accent); margin-top: 10px;
+  }
+  .example-box .ex-label {
+    font-family: var(--font-en); font-size: 10px; font-weight: 700;
+    color: #a5b4fc; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;
+  }
+  .example-box p { color: #e0e7ff; font-size: 13.5px; line-height: 1.6; }
+
+  .read-check {
+    display: flex; align-items: center; gap: 8px;
+    margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);
+  }
+  .read-check input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; }
+  .read-check label { font-size: 13px; color: var(--text2); cursor: pointer; }
+
+  /* ── NO RESULTS ── */
+  .no-results { text-align: center; padding: 40px; color: var(--text3); display: none; }
+  .no-results .nr-icon { font-size: 48px; margin-bottom: 12px; }
+
+  /* ── ROADMAP ── */
+  .roadmap-wrap { display: flex; flex-direction: column; gap: 0; }
+  .road-step {
+    display: flex; gap: 0; position: relative;
+  }
+  .road-left {
+    display: flex; flex-direction: column; align-items: center;
+    width: 52px; flex-shrink: 0;
+  }
+  .road-num {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-en); font-size: 15px; font-weight: 800;
+    color: #fff; flex-shrink: 0; z-index: 1; position: relative;
+  }
+  .road-line {
+    width: 2px; flex: 1; min-height: 24px;
+    background: linear-gradient(to bottom, var(--border), transparent);
+    margin-top: 4px;
+  }
+  .road-step:last-child .road-line { display: none; }
+  .road-content {
+    flex: 1; background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: var(--radius); padding: 16px 18px;
+    margin-bottom: 16px; margin-left: 12px; box-shadow: var(--shadow);
+    transition: 0.2s;
+  }
+  .road-content:hover { box-shadow: var(--shadow-lg); }
+  .road-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .road-head h3 { font-family: var(--font-en); font-size: 16px; font-weight: 700; }
+  .road-head .road-tag {
+    font-family: var(--font-en); font-size: 10px; font-weight: 700;
+    padding: 2px 10px; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .road-desc { font-size: 13.5px; color: var(--text2); line-height: 1.7; margin-bottom: 10px; }
+  .road-tips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .road-tip {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 5px 12px;
+    font-size: 12px; color: var(--text2); font-family: var(--font-en);
+  }
+  .road-tip strong { font-weight: 700; }
+
+  /* ── COMPLETION BANNER ── */
+  .complete-banner {
+    background: linear-gradient(135deg, #1a1a2e, #0f3460);
+    border-radius: var(--radius); padding: 28px 24px;
+    text-align: center; margin-top: 36px;
+    border: 1.5px solid rgba(165,180,252,0.3);
+    box-shadow: var(--shadow-lg);
+  }
+  .complete-banner .cb-icon { font-size: 48px; margin-bottom: 12px; }
+  .complete-banner h2 { color: #a5b4fc; font-size: 20px; margin-bottom: 8px; }
+  .complete-banner p { color: rgba(255,255,255,0.7); font-size: 14px; line-height: 1.7; max-width: 500px; margin: 0 auto 16px; }
+  .parts-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+  .part-chip {
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50px; padding: 6px 16px;
+    font-family: var(--font-en); font-size: 12px; font-weight: 700; color: #e0e7ff;
+  }
+
+  /* ── BACK TO TOP ── */
+  .btt {
+    position: fixed; bottom: 24px; right: 20px; z-index: 900;
+    background: linear-gradient(135deg, var(--s8), var(--s9));
+    color: #fff; border: none; border-radius: 50px;
+    padding: 10px 18px; font-size: 13px; font-family: var(--font-en);
+    font-weight: 600; cursor: pointer; box-shadow: var(--shadow-lg);
+    display: none; transition: 0.2s; align-items: center; gap: 6px;
+  }
+  .btt:hover { transform: translateY(-2px); }
+  .btt.visible { display: flex; }
+
+  @media(max-width: 480px) {
+    .hero { padding: 30px 14px 24px; }
+    .info-chip { min-width: 100%; }
+    .road-content { padding: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <div class="logo">📘 ProgramDict</div>
+  <div class="search-wrap">
+    <span class="si">🔍</span>
+    <input type="text" id="searchInput" placeholder="যেকোনো term খুঁজুন..." oninput="doSearch(this.value)">
+  </div>
+  <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Dark/Light Toggle">🌙</button>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">Part 3 of 3 — Final</div>
+    <h1>
+      <span style="color:#7dd3fc">GitHub</span> ·
+      <span style="color:#6ee7b7">Hosting</span> ·
+      <span style="color:#d8b4fe">AI Coding</span><br>
+      + <span style="color:#fde68a">Beginner Roadmap</span>
+    </h1>
+    <p>Professional developer হওয়ার বাকি সব tools ও সম্পূর্ণ শেখার roadmap</p>
+    <div class="hero-pills">
+      <div class="hero-pill" style="background:rgba(29,155,240,0.2);color:#7dd3fc">🐙 GitHub — ৮টি Term</div>
+      <div class="hero-pill" style="background:rgba(16,185,129,0.2);color:#6ee7b7">🌐 Hosting — ৮টি Term</div>
+      <div class="hero-pill" style="background:rgba(168,85,247,0.2);color:#d8b4fe">🤖 AI — ৯টি Term</div>
+      <div class="hero-pill" style="background:rgba(245,158,11,0.2);color:#fde68a">🗺️ Roadmap — ৭ Step</div>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-top">
+    <span>তোমার অগ্রগতি (Part 3)</span>
+    <strong id="progressText">0 / 25</strong>
+  </div>
+  <div class="progress-bar-outer">
+    <div class="progress-bar-inner" id="progressBar" style="width:0%"></div>
+  </div>
+</div>
+
+<!-- JUMP MENU -->
+<div class="jump-menu">
+  <a class="jump-btn s7" href="#sec7">🐙 S7: GitHub</a>
+  <a class="jump-btn s8" href="#sec8">🌐 S8: Hosting</a>
+  <a class="jump-btn s9" href="#sec9">🤖 S9: AI Coding</a>
+  <a class="jump-btn s10" href="#sec10">🗺️ S10: Roadmap</a>
+</div>
+
+<!-- MAIN -->
+<div class="main" id="mainContent">
+  <div class="part-badge"><span>PART 3 — Section 7 to 10 (Final)</span></div>
+
+
+  <!-- ════════════════ SECTION 7: GITHUB ════════════════ -->
+  <div id="sec7">
+    <div class="section-header open" onclick="toggleSection(this)">
+      <div class="section-icon" style="background:linear-gradient(135deg,#1d9bf0,#0369a1)">🐙</div>
+      <div class="section-header-text">
+        <h2>Section 7: GitHub Terms</h2>
+        <p>Code সংরক্ষণ ও team-এর সাথে কাজ করার platform</p>
+      </div>
+      <span class="section-chevron">▼</span>
+    </div>
+    <div class="section-body open" id="body-sec7">
+
+      <!-- Repository -->
+      <div class="term-card" data-term="repository repo github project">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s7bg);color:var(--s7dark)">01</span>
+          <h3>Repository</h3>
+          <span class="bn-title">রিপোজিটরি / কোড ঘর</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">একটি project-এর সমস্ত files, folders ও history সংরক্ষণের জায়গা — সংক্ষেপে "Repo"</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">GitHub-এ একটি Repo = একটি project-এর সম্পূর্ণ folder। সব code, image, file সেখানে থাকে। Public = সবাই দেখতে পারে। Private = শুধু তুমি।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block git-block">
+            <div class="cb-label">🐙 উদাহরণ</div>
+            <pre><span style="color:#94a3b8"># নতুন repo তৈরি করা</span>
+<span class="ct">git init</span>
+
+<span style="color:#94a3b8"># GitHub-এর repo clone করা</span>
+<span class="ct">git clone</span> <span class="cv">https://github.com/aminulislam79/deen-app.git</span></pre>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>তোমার DEEN App-এর সব code GitHub-এ একটি Repository-তে আছে। URL: github.com/aminulislam79/deen-app — এটাই তার Repo।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-repo" onchange="updateProgress()">
+            <label for="chk-repo">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Commit -->
+      <div class="term-card" data-term="commit github save version">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s7bg);color:var(--s7dark)">02</span>
+          <h3>Commit</h3>
+          <span class="bn-title">কমিট / পরিবর্তন সংরক্ষণ</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Code-এর পরিবর্তন একটি message সহ permanently save করা</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">বইয়ের নতুন chapter লিখে save করার মতো। প্রতিটি Commit-এ কী পরিবর্তন হয়েছে সেটার একটা message থাকে। History দেখা যায়।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block git-block">
+            <div class="cb-label">🐙 উদাহরণ</div>
+            <pre><span class="ct">git add</span> .                          <span style="color:#94a3b8">← সব পরিবর্তন stage করো</span>
+<span class="ct">git commit</span> <span class="cp">-m</span> <span class="cv">"Login page তৈরি করা হলো"</span>
+<span style="color:#94a3b8">↑ message দিয়ে permanently save</span></pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-commit" onchange="updateProgress()">
+            <label for="chk-commit">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Push -->
+      <div class="term-card" data-term="push github upload send">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s7bg);color:var(--s7dark)">03</span>
+          <h3>Push</h3>
+          <span class="bn-title">পুশ / আপলোড</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Local computer-এর commit গুলো GitHub server-এ পাঠানো</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Commit = নিজের computer-এ save। Push = সেই save GitHub-এ upload। Push না করলে internet-এ code যাবে না।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block git-block">
+            <div class="cb-label">🐙 উদাহরণ</div>
+            <pre><span class="ct">git push</span> origin main
+<span style="color:#94a3b8">↑ "main" branch-এ push করো</span>
+
+<span style="color:#94a3b8"># GitHub Pages deploy হয় push করলেই!</span></pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-push" onchange="updateProgress()">
+            <label for="chk-push">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pull -->
+      <div class="term-card" data-term="pull github download fetch update">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s7bg);color:var(--s7dark)">04</span>
+          <h3>Pull</h3>
+          <span class="bn-title">পুল / ডাউনলোড</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">GitHub server থেকে সর্বশেষ পরিবর্তন local computer-এ আনা</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Push-এর উল্টো। Team member কিছু push করলে তুমি pull করে নিজের computer-এ নতুন code আনো। সবাই sync-এ থাকো।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block git-block">
+            <div class="cb-label">🐙 উদাহরণ</div>
+            <pre><span class="ct">git pull</span> origin main
+<span style="color:#94a3b8">↑ GitHub থেকে সর্বশেষ code নামাও</span>
+
+<span style="color:#94a3b8"># Push = উপরে পাঠাও ↑</span>
+<span style="color:#94a3b8"># Pull = নিচে আনো   ↓</span></pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-pull" onchange="updateProgress()">
+            <label for="chk-pull">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Branch -->
+      <div class="term-card" data-term="branch github version separate">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s7bg);color:var(--s7dark)">05</span>
+          <h3>Branch</h3>
+          <span class="bn-title">ব্রাঞ্চ / শাখা</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Main code থেকে আলাদা কপি তৈরি করে নতুন feature develop করা</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">গাছের ডালের মতো। Main (trunk) = মূল code। Branch = আলাদা ডালে কাজ করো, main code নষ্ট হওয়ার ভয় নেই।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block git-block">
+            <div class="cb-label">🐙 উদাহরণ</div>
+            <pre><span class="ct">git branch</span> new-feature    <span style="color:#94a3b8">← নতুন branch তৈরি</span>
+<span class="ct">git checkout</span> new-feature   <span style="color:#94a3b8">← সেই branch-এ যাও</span>
+
+<span style="color:#94a3b8"># Default branch-এর নাম: main বা master</span></pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-branch" onchange="updateProgress()">
+            <label for="chk-branch">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Merge -->
+      <div class="term-card" data-term="merge github combine branch">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s7bg);color:var(--s7dark)">06</span>
+          <h3>Merge</h3>
+          <span class="bn-title">মার্জ / মেলানো</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">একটি branch-এর পরিবর্তন অন্য branch-এ (সাধারণত main-এ) যোগ করা</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">নতুন feature তৈরি শেষ হলে সেটা main code-এ মিশিয়ে দেওয়া। নদীর ছোট শাখা মূল নদীতে মেলার মতো।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block git-block">
+            <div class="cb-label">🐙 উদাহরণ</div>
+            <pre><span class="ct">git checkout</span> main            <span style="color:#94a3b8">← main-এ যাও</span>
+<span class="ct">git merge</span> new-feature        <span style="color:#94a3b8">← feature যোগ করো</span>
+<span style="color:#94a3b8">↑ এখন main-এ নতুন feature আছে!</span></pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-merge" onchange="updateProgress()">
+            <label for="chk-merge">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fork -->
+      <div class="term-card" data-term="fork github copy others repo">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s7bg);color:var(--s7dark)">07</span>
+          <h3>Fork</h3>
+          <span class="bn-title">ফোর্ক / কপি করা</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">অন্য কারো GitHub repository নিজের account-এ copy করা</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">কারো recipe দেখে নিজের খাতায় copy করে নিজের মতো বদলানো = Fork। Original-এ হাত লাগে না, তুমি নিজের copy-তে কাজ করো।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>GitHub-এ কোনো open-source project পছন্দ হলে Fork করো → নিজের account-এ চলে আসবে → নিজের মতো বদলাও। Original project-এর মালিক কিছু জানবে না।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-fork" onchange="updateProgress()">
+            <label for="chk-fork">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Clone -->
+      <div class="term-card" data-term="clone github download local">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s7bg);color:var(--s7dark)">08</span>
+          <h3>Clone</h3>
+          <span class="bn-title">ক্লোন / নামিয়ে আনা</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">GitHub-এর কোনো repository সম্পূর্ণভাবে নিজের computer-এ download করা</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">পার্থক্য</div>
+                <div class="chip-text"><strong>Fork</strong> = GitHub-এ GitHub-এ copy। <strong>Clone</strong> = GitHub থেকে তোমার PC-তে download। কাজ করতে হলে Clone করতেই হবে।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block git-block">
+            <div class="cb-label">🐙 উদাহরণ</div>
+            <pre><span class="ct">git clone</span> <span class="cv">https://github.com/aminulislam79/amal-checklist.git</span>
+
+<span style="color:#94a3b8">↑ এই command চালালে পুরো project</span>
+<span style="color:#94a3b8">  তোমার PC-তে নেমে আসবে!</span></pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-clone" onchange="updateProgress()">
+            <label for="chk-clone">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /body-sec7 -->
+  </div><!-- /sec7 -->
+
+
+  <!-- ════════════════ SECTION 8: HOSTING ════════════════ -->
+  <div id="sec8">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon" style="background:linear-gradient(135deg,#10b981,#059669)">🌐</div>
+      <div class="section-header-text">
+        <h2>Section 8: Hosting Terms</h2>
+        <p>Website internet-এ publish করার সব প্রয়োজনীয় ধারণা</p>
+      </div>
+      <span class="section-chevron">▼</span>
+    </div>
+    <div class="section-body" id="body-sec8">
+
+      <!-- Domain -->
+      <div class="term-card" data-term="domain name url address website">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s8bg);color:var(--s8dark)">01</span>
+          <h3>Domain</h3>
+          <span class="bn-title">ডোমেইন / ঠিকানা</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Internet-এ website-এর নামের ঠিকানা — যেমন google.com, facebook.com</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">বাড়ির ঠিকানা না থাকলে কেউ আসতে পারবে না। Domain হলো website-এর ঠিকানা। .com, .org, .bd — এগুলো domain extension।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>তোমার DEEN App-এর address: <strong>aminulislam79.github.io/deen-app</strong> — এটাই তার Domain (GitHub Pages-এর sub-domain)। নিজের domain কিনলে হতো: <strong>deenapp.com</strong></p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-domain" onchange="updateProgress()">
+            <label for="chk-domain">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hosting -->
+      <div class="term-card" data-term="hosting server space web files store">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s8bg);color:var(--s8dark)">02</span>
+          <h3>Hosting</h3>
+          <span class="bn-title">হোস্টিং / জায়গা ভাড়া</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Website-এর files internet-এ সবসময় চালু থাকা server-এ রাখার service</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">দোকান দিতে জায়গা ভাড়া নিতে হয় — Hosting হলো internet-এ সেই জায়গা। GitHub Pages, Vercel, Netlify = free hosting।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>তোমার সব projects GitHub Pages-এ free host হচ্ছে। Paid hosting-এ Namecheap, GoDaddy, Hostinger পাওয়া যায়। বাংলাদেশে: ExonHost, Host.com.bd।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-hosting" onchange="updateProgress()">
+            <label for="chk-hosting">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- DNS -->
+      <div class="term-card" data-term="dns domain name system ip address">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s8bg);color:var(--s8dark)">03</span>
+          <h3>DNS</h3>
+          <span class="bn-title">ডিএনএস / নামের অনুবাদক</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Domain Name System — নামকে (google.com) IP address (142.250.x.x)-এ রূপান্তর করে</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">ফোনের contact list-এ নাম লেখা থাকে, number না। DNS-ও তেমনি — "google.com" দিলে সে জানে কোন server-এ যেতে হবে।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>তুমি browser-এ "facebook.com" লেখো → DNS server জিজ্ঞেস করো "এর IP কত?" → DNS বলে "157.240.x.x" → Browser সেই IP-তে যায় → Facebook খোলে।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-dns" onchange="updateProgress()">
+            <label for="chk-dns">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- SSL -->
+      <div class="term-card" data-term="ssl https secure certificate lock">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s8bg);color:var(--s8dark)">04</span>
+          <h3>SSL / HTTPS</h3>
+          <span class="bn-title">এসএসএল / নিরাপদ সংযোগ</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Secure Sockets Layer — browser ও server-এর মধ্যে data encrypt করে পাঠানো</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">URL-এর শুরুতে 🔒 বা "https" দেখলে SSL আছে। Password বা card number পাঠালে কেউ মাঝপথে চুরি করতে পারবে না।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p><strong>http://</strong> = অরক্ষিত, ডাকপিওন চিঠি পড়তে পারে। <strong>https://</strong> = চিঠি sealed envelope-এ, কেউ খুলতে পারবে না। GitHub Pages-এ SSL free দেওয়া থাকে।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-ssl" onchange="updateProgress()">
+            <label for="chk-ssl">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- CDN -->
+      <div class="term-card" data-term="cdn content delivery network fast speed">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s8bg);color:var(--s8dark)">05</span>
+          <h3>CDN</h3>
+          <span class="bn-title">সিডিএন / দ্রুত বিতরণ</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Content Delivery Network — বিশ্বজুড়ে server-এ file রেখে user-এর কাছাকাছি থেকে দ্রুত দেওয়া</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">ঢাকায় বসে USA-র server থেকে image load করলে slow হয়। CDN ঢাকার কাছের server থেকে দেয় — তাই fast।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>এই page-এ Google Fonts load হচ্ছে CDN থেকে। Cloudflare, jsDelivr, cdnjs — এগুলো popular CDN। Bootstrap, jQuery সব CDN থেকে ব্যবহার করা যায়।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-cdn" onchange="updateProgress()">
+            <label for="chk-cdn">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Deployment -->
+      <div class="term-card" data-term="deployment deploy publish live production">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s8bg);color:var(--s8dark)">06</span>
+          <h3>Deployment</h3>
+          <span class="bn-title">ডেপ্লয়মেন্ট / প্রকাশ করা</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Local বা GitHub-এর code internet-এ live করে সবার জন্য accessible করা</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">রান্না করা = code লেখা। খাবার table-এ পরিবেশন করা = Deployment। যতক্ষণ deploy না হয় কেউ দেখতে পারবে না।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>তোমার DEEN App GitHub-এ push করলেই GitHub Pages automatically deploy করে। Vercel ও Netlify-তেও auto-deploy হয়। এটাই CI/CD-এর ধারণা।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-deploy" onchange="updateProgress()">
+            <label for="chk-deploy">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Static Website -->
+      <div class="term-card" data-term="static website html css js no backend">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s8bg);color:var(--s8dark)">07</span>
+          <h3>Static Website</h3>
+          <span class="bn-title">স্ট্যাটিক ওয়েবসাইট</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">শুধু HTML, CSS, JavaScript দিয়ে তৈরি — server-side কোনো processing নেই</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Static = স্থির। সবার কাছে একই content যায়। Database নেই, login নেই। Fast, cheap, secure। GitHub Pages = Static hosting।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>তোমার এই Dictionary file, DEEN App, Amal Checklist — সবই Static Website। শুধু HTML file, GitHub Pages-এ বিনামূল্যে host হচ্ছে।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-static" onchange="updateProgress()">
+            <label for="chk-static">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dynamic Website -->
+      <div class="term-card" data-term="dynamic website backend database server php node">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s8bg);color:var(--s8dark)">08</span>
+          <h3>Dynamic Website</h3>
+          <span class="bn-title">ডায়নামিক ওয়েবসাইট</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Server-এ processing হয়, database থেকে data আসে — প্রতিটি user-এর জন্য আলাদা content</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Facebook-এ তুমি login করলে তোমার feed, আমি login করলে আমার feed। একই website কিন্তু আলাদা content — এটাই Dynamic।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>Facebook, YouTube, Daraz, Pathao — সব Dynamic Website। Login, user data, real-time update সব আছে। Backend ও Database লাগে।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-dynamic" onchange="updateProgress()">
+            <label for="chk-dynamic">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /body-sec8 -->
+  </div><!-- /sec8 -->
+
+
+  <!-- ════════════════ SECTION 9: AI CODING ════════════════ -->
+  <div id="sec9">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon" style="background:linear-gradient(135deg,#a855f7,#7c3aed)">🤖</div>
+      <div class="section-header-text">
+        <h2>Section 9: AI Coding Terms</h2>
+        <p>AI দিয়ে coding করার যুগের গুরুত্বপূর্ণ ধারণাগুলো</p>
+      </div>
+      <span class="section-chevron">▼</span>
+    </div>
+    <div class="section-body" id="body-sec9">
+
+      <!-- ChatGPT -->
+      <div class="term-card" data-term="chatgpt openai ai assistant gpt">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s9bg);color:var(--s9dark)">01</span>
+          <h3>ChatGPT</h3>
+          <span class="bn-title">চ্যাটজিপিটি</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">OpenAI-এর তৈরি AI chatbot — text লিখে যেকোনো প্রশ্নের উত্তর পাওয়া যায়</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">GPT = Generative Pre-trained Transformer। Code লেখা, debugging, explanation, translation — সব করতে পারে। chat.openai.com-এ free ব্যবহার করা যায়।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 তুমি কীভাবে ব্যবহার করো</div>
+            <p>তুমি ChatGPT দিয়ে code লেখো, idea নাও, content তৈরি করো। এটা তোমার AI সহকর্মী।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-chatgpt" onchange="updateProgress()">
+            <label for="chk-chatgpt">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Claude -->
+      <div class="term-card" data-term="claude anthropic ai assistant coding">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s9bg);color:var(--s9dark)">02</span>
+          <h3>Claude</h3>
+          <span class="bn-title">ক্লড</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Anthropic-এর তৈরি AI assistant — দীর্ঘ ও জটিল কাজে বিশেষভাবে দক্ষ</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Claude বড় file পড়তে পারে, দীর্ঘ code লিখতে পারে, detailed ব্যাখ্যা দেয়। claude.ai-তে free ব্যবহার করা যায়।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 তুমি কীভাবে ব্যবহার করো</div>
+            <p>তুমি ৩টি Gmail account দিয়ে ৩টি Claude account ব্যবহার করো — এই পুরো Dictionary project Claude দিয়েই তৈরি হচ্ছে!</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-claude" onchange="updateProgress()">
+            <label for="chk-claude">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gemini -->
+      <div class="term-card" data-term="gemini google ai image generation">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s9bg);color:var(--s9dark)">03</span>
+          <h3>Gemini</h3>
+          <span class="bn-title">জেমিনি</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Google-এর AI model — text, image, code সব বোঝে ও তৈরি করতে পারে</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Gemini বিশেষভাবে image generation-এ ভালো। Google-এর সব products-এ integrate হচ্ছে। gemini.google.com-এ free।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 তুমি কীভাবে ব্যবহার করো</div>
+            <p>তুমি Gemini দিয়ে cinematic short film ও reels-এর জন্য image generate করো, তারপর image-to-video tool-এ দাও।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-gemini" onchange="updateProgress()">
+            <label for="chk-gemini">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prompt -->
+      <div class="term-card" data-term="prompt ai instruction input question">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s9bg);color:var(--s9dark)">04</span>
+          <h3>Prompt</h3>
+          <span class="bn-title">প্রম্পট / নির্দেশ</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">AI-কে দেওয়া নির্দেশ বা প্রশ্ন — যা লিখে দিলে AI সেই অনুযায়ী কাজ করে</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">ভালো Prompt = ভালো Result। AI কে যত clearly বলবে কী চাও, তত ভালো কাজ করবে। এটাকে "Prompt Engineering" বলে।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block ai-block">
+            <div class="cb-label">🤖 ভালো vs খারাপ Prompt</div>
+            <pre><span style="color:#fca5a5">❌ খারাপ:</span> <span class="ca">"একটা website বানাও"</span>
+
+<span style="color:#86efac">✅ ভালো:</span> <span class="ca">"একটি বাংলা Recipe website
+বানাও — mobile friendly, dark mode সহ,
+Noto Serif Bengali font, ৫টি recipe card"</span></pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-prompt" onchange="updateProgress()">
+            <label for="chk-prompt">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Token -->
+      <div class="term-card" data-term="token ai word piece limit">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s9bg);color:var(--s9dark)">05</span>
+          <h3>Token</h3>
+          <span class="bn-title">টোকেন</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">AI যেভাবে text পড়ে ও লেখে তার সবচেয়ে ছোট একক — মোটামুটি ১ token ≈ ৩-৪ অক্ষর বা ৭৫% word</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">AI পুরো word এক সাথে না পড়ে ভেঙে ভেঙে পড়ে। Token = সেই ভাঙা টুকরো। API-তে token count অনুযায়ী charge হয়।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>"Programming" = ৩ টোকেন। "আমি" = ২ টোকেন। Claude-এর free plan-এ প্রতি conversation-এ limited token পাওয়া যায়। বড় project ভাগ করে করতে হয়।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-token" onchange="updateProgress()">
+            <label for="chk-token">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Context Window -->
+      <div class="term-card" data-term="context window memory ai conversation limit">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s9bg);color:var(--s9dark)">06</span>
+          <h3>Context Window</h3>
+          <span class="bn-title">কনটেক্সট উইন্ডো / স্মৃতির সীমা</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">AI একটি conversation-এ কতটুকু text একসাথে মনে রাখতে পারে তার সীমা</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">মানুষ একটি বইয়ের ২০ পাতা মনে রাখতে পারে। Context Window হলো AI-এর সেই সীমা। এর বাইরে গেলে আগের কথা ভুলে যায়।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>Claude-এর সাথে conversation অনেক বড় হলে শুরুর কথা ভুলে যায় — এটাই Context Window-এর সীমা। তাই বড় project ভাগ করে নতুন conversation-এ করা ভালো।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-context" onchange="updateProgress()">
+            <label for="chk-context">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Agent -->
+      <div class="term-card" data-term="ai agent autonomous task automation">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s9bg);color:var(--s9dark)">07</span>
+          <h3>AI Agent</h3>
+          <span class="bn-title">এআই এজেন্ট / স্বায়ত্তশাসিত AI</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">AI যে নিজে নিজে plan করে, tools ব্যবহার করে এবং কাজ সম্পন্ন করে</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Normal AI = প্রশ্নের উত্তর দেয়। AI Agent = নিজে search করে, code চালায়, file বানায়, সিদ্ধান্ত নেয়। একটি digital কর্মচারী।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>তুমি বললে "আমার জন্য একটি portfolio website বানাও, GitHub-এ push করো এবং deploy করো" — AI Agent সব নিজে করবে। Claude Code = AI Coding Agent।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-agent" onchange="updateProgress()">
+            <label for="chk-agent">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- MCP -->
+      <div class="term-card" data-term="mcp model context protocol tools ai connect">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s9bg);color:var(--s9dark)">08</span>
+          <h3>MCP</h3>
+          <span class="bn-title">এমসিপি / AI টুল সংযোগ</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Model Context Protocol — AI-কে বাইরের tools ও services-এর সাথে সংযুক্ত করার standard পদ্ধতি</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">AI = brain। MCP = হাত ও পা। MCP দিয়ে AI Google Search করতে পারে, file পড়তে পারে, calendar দেখতে পারে। Anthropic তৈরি করেছে।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>Claude-এ web search, calendar, file create — এগুলো সব MCP-র মাধ্যমে কাজ করছে। এই page যখন Claude বানাচ্ছে তখন file create MCP ব্যবহার করছে।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-mcp" onchange="updateProgress()">
+            <label for="chk-mcp">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- API Integration -->
+      <div class="term-card" data-term="api integration connect service ai openai">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s9bg);color:var(--s9dark)">09</span>
+          <h3>API Integration</h3>
+          <span class="bn-title">এপিআই ইন্টিগ্রেশন</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">AI বা অন্য service-এর API নিজের app-এ যুক্ত করে তার power ব্যবহার করা</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">ChatGPT-এর AI নিজের app-এ ব্যবহার করতে চাইলে OpenAI API integrate করো। API Key নিয়ে code-এ লাগালেই AI তোমার app-এ কাজ করবে।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block ai-block">
+            <div class="cb-label">🤖 উদাহরণ</div>
+            <pre><span style="color:#94a3b8">// Claude API তোমার app-এ</span>
+<span class="ca">fetch</span>(<span class="cv">"https://api.anthropic.com/v1/messages"</span>, {
+  <span class="cp">method</span>: <span class="cv">"POST"</span>,
+  <span class="cp">headers</span>: { <span class="cv">"x-api-key"</span>: <span class="ca">YOUR_KEY</span> },
+  <span class="cp">body</span>: JSON.stringify({ <span class="cp">prompt</span>: <span class="cv">"আমাকে সাহায্য করো"</span> })
+})</pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-apiint" onchange="updateProgress()">
+            <label for="chk-apiint">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /body-sec9 -->
+  </div><!-- /sec9 -->
+
+
+  <!-- ════════════════ SECTION 10: ROADMAP ════════════════ -->
+  <div id="sec10">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon" style="background:linear-gradient(135deg,#f59e0b,#d97706)">🗺️</div>
+      <div class="section-header-text">
+        <h2>Section 10: Beginner Roadmap</h2>
+        <p>একদম শূন্য থেকে Professional Developer হওয়ার Step-by-Step পথ</p>
+      </div>
+      <span class="section-chevron">▼</span>
+    </div>
+    <div class="section-body" id="body-sec10">
+
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin-bottom:20px;">
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;">
+          🎯 <strong style="color:var(--text)">লক্ষ্য:</strong> এই roadmap follow করলে তুমি ৬-১২ মাসে একজন AI-assisted Web Developer হতে পারবে।
+          প্রতিটি step-এ real project বানাও — শুধু পড়া নয়, হাতে করো।
+        </p>
+      </div>
+
+      <div class="roadmap-wrap">
+
+        <!-- Step 1: HTML -->
+        <div class="road-step">
+          <div class="road-left">
+            <div class="road-num" style="background:linear-gradient(135deg,#0ea5e9,#0284c7)">1</div>
+            <div class="road-line"></div>
+          </div>
+          <div class="road-content">
+            <div class="road-head">
+              <h3>HTML শেখো</h3>
+              <span class="road-tag" style="background:#e0f2fe;color:#0369a1">প্রথম ধাপ</span>
+            </div>
+            <div class="road-desc">
+              HTML হলো সব কিছুর ভিত্তি। Website-এর skeleton বানানো শেখো। Tag, Element, Attribute, Form, Table — সব মুখস্থ না করে বুঝে বুঝে শেখো।
+              <br><br>
+              <strong>🎯 Project:</strong> নিজের Personal Profile Page বানাও — ছবি, নাম, ঠিকানা, hobbies দিয়ে।
+            </div>
+            <div class="road-tips">
+              <span class="road-tip">⏱️ <strong>সময়:</strong> ১-২ সপ্তাহ</span>
+              <span class="road-tip">🆓 <strong>Free Resource:</strong> W3Schools</span>
+              <span class="road-tip">🤖 <strong>AI Help:</strong> Claude/ChatGPT</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: CSS -->
+        <div class="road-step">
+          <div class="road-left">
+            <div class="road-num" style="background:linear-gradient(135deg,#f97316,#ea580c)">2</div>
+            <div class="road-line"></div>
+          </div>
+          <div class="road-content">
+            <div class="road-head">
+              <h3>CSS শেখো</h3>
+              <span class="road-tag" style="background:#fff7ed;color:#c2410c">দ্বিতীয় ধাপ</span>
+            </div>
+            <div class="road-desc">
+              HTML দিয়ে কাঠামো, CSS দিয়ে সৌন্দর্য। Color, Margin, Padding, Flexbox, Grid, Responsive Design শেখো। Mobile-first design করো।
+              <br><br>
+              <strong>🎯 Project:</strong> Profile Page-কে সুন্দর করো। Dark mode যোগ করো। Mobile-এ ভালো দেখায় করো।
+            </div>
+            <div class="road-tips">
+              <span class="road-tip">⏱️ <strong>সময়:</strong> ২-৩ সপ্তাহ</span>
+              <span class="road-tip">🆓 <strong>Free Resource:</strong> CSS-Tricks</span>
+              <span class="road-tip">🎨 <strong>Tool:</strong> Flexbox Froggy</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: JavaScript -->
+        <div class="road-step">
+          <div class="road-left">
+            <div class="road-num" style="background:linear-gradient(135deg,#eab308,#ca8a04)">3</div>
+            <div class="road-line"></div>
+          </div>
+          <div class="road-content">
+            <div class="road-head">
+              <h3>JavaScript শেখো</h3>
+              <span class="road-tag" style="background:#fefce8;color:#a16207">তৃতীয় ধাপ</span>
+            </div>
+            <div class="road-desc">
+              JavaScript দিয়ে website interactive হয়। Variable, Function, Event, DOM, Fetch API, LocalStorage শেখো। সব মুখস্থ না করলেও চলে — concept বোঝো।
+              <br><br>
+              <strong>🎯 Project:</strong> To-Do App বানাও — add, delete, LocalStorage-এ save।
+            </div>
+            <div class="road-tips">
+              <span class="road-tip">⏱️ <strong>সময়:</strong> ৩-৪ সপ্তাহ</span>
+              <span class="road-tip">🆓 <strong>Free Resource:</strong> JavaScript.info</span>
+              <span class="road-tip">🤖 <strong>AI Help:</strong> Claude দিয়ে debug</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4: GitHub -->
+        <div class="road-step">
+          <div class="road-left">
+            <div class="road-num" style="background:linear-gradient(135deg,#1d9bf0,#0369a1)">4</div>
+            <div class="road-line"></div>
+          </div>
+          <div class="road-content">
+            <div class="road-head">
+              <h3>GitHub শেখো</h3>
+              <span class="road-tag" style="background:#e0f2fe;color:#0369a1">চতুর্থ ধাপ</span>
+            </div>
+            <div class="road-desc">
+              Code সংরক্ষণ ও share করার সবচেয়ে গুরুত্বপূর্ণ tool। Repository, Commit, Push, Pull শেখো। GitHub account তৈরি করো।
+              <br><br>
+              <strong>🎯 Project:</strong> আগের সব project GitHub-এ upload করো। GitHub Pages-এ live করো।
+            </div>
+            <div class="road-tips">
+              <span class="road-tip">⏱️ <strong>সময়:</strong> ১ সপ্তাহ</span>
+              <span class="road-tip">🆓 <strong>Hosting:</strong> GitHub Pages (Free)</span>
+              <span class="road-tip">📱 <strong>App:</strong> GitHub Mobile</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 5: Hosting -->
+        <div class="road-step">
+          <div class="road-left">
+            <div class="road-num" style="background:linear-gradient(135deg,#10b981,#059669)">5</div>
+            <div class="road-line"></div>
+          </div>
+          <div class="road-content">
+            <div class="road-head">
+              <h3>Hosting বোঝো</h3>
+              <span class="road-tag" style="background:#d1fae5;color:#065f46">পঞ্চম ধাপ</span>
+            </div>
+            <div class="road-desc">
+              Domain, Hosting, DNS, SSL, Deployment বোঝো। Free hosting দিয়ে শুরু করো — GitHub Pages, Vercel, Netlify। নিজের project-এর link সবাইকে দিতে পারবে।
+              <br><br>
+              <strong>🎯 Project:</strong> নিজের একটি project Vercel-এ deploy করো।
+            </div>
+            <div class="road-tips">
+              <span class="road-tip">⏱️ <strong>সময়:</strong> ১ সপ্তাহ</span>
+              <span class="road-tip">🆓 <strong>Free:</strong> Vercel / Netlify</span>
+              <span class="road-tip">💰 <strong>Domain:</strong> .com ≈ ১২০০ টাকা/বছর</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 6: AI Assisted Coding -->
+        <div class="road-step">
+          <div class="road-left">
+            <div class="road-num" style="background:linear-gradient(135deg,#a855f7,#7c3aed)">6</div>
+            <div class="road-line"></div>
+          </div>
+          <div class="road-content">
+            <div class="road-head">
+              <h3>AI-Assisted Coding</h3>
+              <span class="road-tag" style="background:#f3e8ff;color:#6b21a8">ষষ্ঠ ধাপ</span>
+            </div>
+            <div class="road-desc">
+              ChatGPT, Claude, Gemini দিয়ে দ্রুত code লেখা শেখো। ভালো Prompt লিখতে শেখো। AI-এর দেওয়া code বুঝতে পারো — শুধু copy-paste নয়।
+              <br><br>
+              <strong>🎯 Project:</strong> AI দিয়ে একটি complete Web App বানাও — Task Manager বা Recipe App।
+            </div>
+            <div class="road-tips">
+              <span class="road-tip">⏱️ <strong>সময়:</strong> Ongoing</span>
+              <span class="road-tip">🤖 <strong>Tools:</strong> Claude + ChatGPT</span>
+              <span class="road-tip">💡 <strong>Key:</strong> Prompt Engineering</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 7: Real Projects -->
+        <div class="road-step">
+          <div class="road-left">
+            <div class="road-num" style="background:linear-gradient(135deg,#ef4444,#dc2626)">7</div>
+            <div class="road-line"></div>
+          </div>
+          <div class="road-content">
+            <div class="road-head">
+              <h3>Real Projects বানাও</h3>
+              <span class="road-tag" style="background:#fee2e2;color:#991b1b">চূড়ান্ত ধাপ</span>
+            </div>
+            <div class="road-desc">
+              শেখা শেষ হয় না — Real project-ই সবচেয়ে ভালো শিক্ষক। নিজের জীবনের সমস্যা সমাধানের জন্য app বানাও। Portfolio তৈরি করো। অন্যদের কাজে লাগে এমন কিছু বানাও।
+              <br><br>
+              <strong>🎯 Ideas:</strong> Islamic Amal App, Office Task Manager, Recipe Website, Local Business site, School Result System।
+            </div>
+            <div class="road-tips">
+              <span class="road-tip">🏆 <strong>Goal:</strong> ৫টি project GitHub-এ</span>
+              <span class="road-tip">💼 <strong>Next:</strong> Freelancing / Job</span>
+              <span class="road-tip">📱 <strong>Future:</strong> Flutter APK বানাও</span>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /roadmap-wrap -->
+
+      <!-- Completion Banner -->
+      <div class="complete-banner">
+        <div class="cb-icon">🎉</div>
+        <h2>অভিনন্দন! তুমি সম্পূর্ণ Dictionary শেষ করেছো!</h2>
+        <p>
+          ৩টি Part-এ মোট ১২৫+ programming term শিখেছো। এখন HTML, CSS, JavaScript, GitHub, Hosting, AI Coding — সব বিষয়ে তোমার solid foundation আছে।
+          এবার শুধু practice ও real project-ই তোমাকে expert বানাবে।
+        </p>
+        <div class="parts-row">
+          <div class="part-chip">📘 Part 1: Basics + UI (68 Terms)</div>
+          <div class="part-chip">💻 Part 2: HTML + CSS + JS (30 Terms)</div>
+          <div class="part-chip">🚀 Part 3: GitHub + Hosting + AI + Roadmap</div>
+        </div>
+      </div>
+
+    </div><!-- /body-sec10 -->
+  </div><!-- /sec10 -->
+
+  <div class="no-results" id="noResults">
+    <div class="nr-icon">🔍</div>
+    <p>কোনো result পাওয়া যায়নি।</p>
+  </div>
+
+</div><!-- /main -->
+
+<!-- BACK TO TOP -->
+<button class="btt" id="bttBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">⬆ উপরে</button>
+
+<script>
+// ── THEME ──
+let dark = localStorage.getItem('pd-theme') === 'dark';
+function applyTheme() {
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  document.getElementById('themeBtn').textContent = dark ? '☀️' : '🌙';
+  localStorage.setItem('pd-theme', dark ? 'dark' : 'light');
+}
+applyTheme();
+function toggleTheme() { dark = !dark; applyTheme(); }
+
+// ── ACCORDION ──
+function toggleSection(header) {
+  header.classList.toggle('open');
+  header.nextElementSibling.classList.toggle('open');
+}
+function toggleTerm(card) {
+  card.classList.toggle('open');
+  saveProgress();
+}
+
+// ── PROGRESS ──
+const TOTAL = 25;
+function updateProgress() {
+  const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+  document.getElementById('progressText').textContent = checked + ' / ' + TOTAL;
+  const pct = Math.round((checked / TOTAL) * 100);
+  document.getElementById('progressBar').style.width = pct + '%';
+  saveProgress();
+}
+function saveProgress() {
+  const state = {};
+  document.querySelectorAll('input[type="checkbox"]').forEach(cb => { state[cb.id] = cb.checked; });
+  localStorage.setItem('pd-progress-p3', JSON.stringify(state));
+}
+function loadProgress() {
+  const saved = localStorage.getItem('pd-progress-p3');
+  if (!saved) return;
+  const state = JSON.parse(saved);
+  Object.keys(state).forEach(id => { const el = document.getElementById(id); if (el) el.checked = state[id]; });
+  updateProgress();
+}
+loadProgress();
+
+// ── SEARCH ──
+function doSearch(q) {
+  q = q.trim().toLowerCase();
+  const noRes = document.getElementById('noResults');
+  const allCards = document.querySelectorAll('.term-card');
+  let found = 0;
+  if (!q) {
+    allCards.forEach(c => c.style.display = '');
+    noRes.style.display = 'none';
+    return;
+  }
+  allCards.forEach(card => {
+    const term = (card.dataset.term || '').toLowerCase();
+    const text = card.textContent.toLowerCase();
+    if (term.includes(q) || text.includes(q)) {
+      card.style.display = '';
+      card.classList.add('open');
+      let parent = card.closest('.section-body');
+      if (parent) { parent.classList.add('open'); parent.previousElementSibling && parent.previousElementSibling.classList.add('open'); }
+      found++;
+    } else { card.style.display = 'none'; }
+  });
+  noRes.style.display = found === 0 ? 'block' : 'none';
+}
+
+// ── BACK TO TOP ──
+window.addEventListener('scroll', () => {
+  document.getElementById('bttBtn').classList.toggle('visible', window.scrollY > 400);
+});
+
+// ── JUMP ACTIVE ──
+const secs = ['sec7','sec8','sec9','sec10'];
+window.addEventListener('scroll', () => {
+  const btns = document.querySelectorAll('.jump-btn');
+  secs.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    if (r.top <= 100 && r.bottom >= 100) {
+      btns.forEach(b => b.classList.remove('active'));
+      btns[i] && btns[i].classList.add('active');
+    }
+  });
+});
+</script>
+<script>
+if ("serviceWorker" in navigator && location.protocol === "https:") {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js")
+      .then(() => console.log("SW registered"))
+      .catch(e => console.log("SW skipped:", e));
+  });
+}
+</script>
+</body>
+</html>

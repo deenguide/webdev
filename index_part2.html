@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0f172a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ProgramDict">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Programming Dictionary – Bangla | Part 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f8fc;
+    --surface: #ffffff;
+    --surface2: #f0f2fa;
+    --border: #e2e5f0;
+    --text: #1a1d2e;
+    --text2: #4a4f6a;
+    --text3: #7c82a0;
+    --s4: #0ea5e9;   /* HTML – sky blue */
+    --s4bg: #e0f2fe;
+    --s4dark: #0369a1;
+    --s5: #f97316;   /* CSS – orange */
+    --s5bg: #fff7ed;
+    --s5dark: #c2410c;
+    --s6: #eab308;   /* JS – yellow */
+    --s6bg: #fefce8;
+    --s6dark: #a16207;
+    --accent: #4f46e5;
+    --accent2: #7c3aed;
+    --shadow: 0 2px 16px rgba(79,70,229,0.08);
+    --shadow-lg: 0 8px 40px rgba(79,70,229,0.13);
+    --radius: 14px;
+    --radius-sm: 8px;
+    --font-bn: 'Noto Serif Bengali', serif;
+    --font-en: 'Inter', sans-serif;
+    --font-code: 'Fira Code', monospace;
+  }
+  [data-theme="dark"] {
+    --bg: #0f1117;
+    --surface: #1a1d2e;
+    --surface2: #232640;
+    --border: #2e3250;
+    --text: #e8eaf6;
+    --text2: #b0b8d8;
+    --text3: #6e78a0;
+    --s4bg: #0c2340;
+    --s5bg: #2a1500;
+    --s6bg: #1a1400;
+    --shadow: 0 2px 16px rgba(0,0,0,0.3);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.4);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-bn);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    transition: background 0.3s, color 0.3s;
+    min-height: 100vh;
+  }
+
+  /* ── TOP NAV ── */
+  .topnav {
+    position: sticky; top: 0; z-index: 999;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    padding: 0 16px;
+    display: flex; align-items: center; gap: 10px;
+    height: 58px;
+  }
+  .topnav .logo {
+    font-family: var(--font-en); font-weight: 700; font-size: 17px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    white-space: nowrap;
+  }
+  .topnav .search-wrap { flex: 1; position: relative; }
+  .topnav .search-wrap input {
+    width: 100%; padding: 8px 12px 8px 36px;
+    border: 1.5px solid var(--border); border-radius: 50px;
+    background: var(--surface2); color: var(--text);
+    font-family: var(--font-bn); font-size: 14px;
+    outline: none; transition: border 0.2s;
+  }
+  .topnav .search-wrap input:focus { border-color: var(--accent); }
+  .topnav .search-wrap .si {
+    position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+    color: var(--text3); pointer-events: none; font-size: 15px;
+  }
+  .topnav .theme-btn {
+    background: var(--surface2); border: 1.5px solid var(--border);
+    border-radius: 50%; width: 38px; height: 38px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; color: var(--text2); transition: 0.2s; flex-shrink: 0;
+  }
+  .topnav .theme-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #0c1445 0%, #0f172a 50%, #1e1b4b 100%);
+    color: #fff; padding: 44px 20px 36px;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 20% 60%, rgba(14,165,233,0.25) 0%, transparent 55%),
+                radial-gradient(ellipse at 75% 25%, rgba(249,115,22,0.2) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(234,179,8,0.15) 0%, transparent 50%);
+  }
+  .hero-content { position: relative; }
+  .hero-badge {
+    display: inline-block; background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2); border-radius: 50px;
+    padding: 5px 16px; font-family: var(--font-en); font-size: 12px;
+    font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+    color: #bae6fd; margin-bottom: 16px;
+  }
+  .hero h1 { font-size: clamp(21px, 5vw, 34px); font-weight: 700; line-height: 1.3; margin-bottom: 10px; }
+  .hero h1 .h = color: #bae6fd;
+  .hero h1 .c { color: #fdba74; }
+  .hero h1 .j { color: #fde68a; }
+  .hero p { font-size: 15px; color: rgba(255,255,255,0.7); max-width: 520px; margin: 0 auto 22px; }
+  .hero-pills {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
+  }
+  .hero-pill {
+    padding: 6px 18px; border-radius: 50px; font-family: var(--font-en);
+    font-size: 13px; font-weight: 700; border: 1.5px solid rgba(255,255,255,0.2);
+  }
+
+  /* ── PROGRESS ── */
+  .progress-wrap {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+  }
+  .progress-top {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 6px; font-size: 13px; color: var(--text2);
+  }
+  .progress-top strong { color: var(--accent); font-family: var(--font-en); }
+  .progress-bar-outer { background: var(--border); border-radius: 50px; height: 8px; overflow: hidden; }
+  .progress-bar-inner {
+    height: 100%; border-radius: 50px;
+    background: linear-gradient(90deg, var(--s4), var(--s5), var(--s6));
+    transition: width 0.5s ease;
+  }
+
+  /* ── JUMP MENU ── */
+  .jump-menu {
+    background: var(--surface2); border-bottom: 1px solid var(--border);
+    padding: 10px 16px; overflow-x: auto; display: flex; gap: 8px;
+    scrollbar-width: none;
+  }
+  .jump-menu::-webkit-scrollbar { display: none; }
+  .jump-btn {
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 50px; padding: 6px 14px; white-space: nowrap;
+    font-size: 12px; font-family: var(--font-en); font-weight: 600;
+    color: var(--text2); cursor: pointer; transition: 0.2s; text-decoration: none;
+  }
+  .jump-btn:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .jump-btn.s4:hover, .jump-btn.s4.active { background: var(--s4); border-color: var(--s4); color: #fff; }
+  .jump-btn.s5:hover, .jump-btn.s5.active { background: var(--s5); border-color: var(--s5); color: #fff; }
+  .jump-btn.s6:hover, .jump-btn.s6.active { background: var(--s6); border-color: var(--s6); color: #000; }
+
+  /* ── MAIN ── */
+  .main { max-width: 860px; margin: 0 auto; padding: 24px 16px 80px; }
+
+  .part-badge { text-align: center; padding: 10px; margin-bottom: 8px; }
+  .part-badge span {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--s4), var(--s5));
+    color: #fff; font-family: var(--font-en); font-size: 12px;
+    font-weight: 700; padding: 5px 18px; border-radius: 50px; letter-spacing: 1px;
+  }
+
+  /* ── SECTION HEADER ── */
+  .section-header {
+    display: flex; align-items: center; gap: 12px;
+    margin: 36px 0 18px; cursor: pointer;
+    background: var(--surface); border-radius: var(--radius);
+    padding: 16px 20px; border: 1.5px solid var(--border);
+    box-shadow: var(--shadow); user-select: none; transition: 0.2s;
+  }
+  .section-header:hover { border-color: var(--accent); }
+  .section-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+  .section-header-text { flex: 1; }
+  .section-header-text h2 { font-size: 17px; font-weight: 700; color: var(--text); }
+  .section-header-text p { font-size: 12px; color: var(--text3); margin-top: 2px; }
+  .section-chevron { color: var(--text3); font-size: 18px; transition: transform 0.3s; }
+  .section-header.open .section-chevron { transform: rotate(180deg); }
+  .section-body { display: none; }
+  .section-body.open { display: block; }
+
+  /* ── TERM CARD ── */
+  .term-card {
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: var(--radius); margin-bottom: 14px;
+    overflow: hidden; box-shadow: var(--shadow);
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+  .term-card:hover { box-shadow: var(--shadow-lg); }
+  .term-card-header {
+    padding: 14px 18px; display: flex; align-items: center; gap: 12px;
+    cursor: pointer; user-select: none;
+  }
+  .term-badge {
+    font-family: var(--font-en); font-size: 11px; font-weight: 700;
+    padding: 3px 10px; border-radius: 50px; white-space: nowrap; flex-shrink: 0;
+  }
+  .term-card-header h3 {
+    font-family: var(--font-en); font-size: 16px; font-weight: 700;
+    color: var(--text); flex: 1;
+  }
+  .term-card-header .bn-title { font-size: 13px; color: var(--text2); font-weight: 600; }
+  .term-chevron { color: var(--text3); font-size: 14px; transition: transform 0.3s; }
+  .term-card.open .term-chevron { transform: rotate(180deg); }
+  .term-body { display: none; padding: 0 18px 18px; }
+  .term-card.open .term-body { display: block; }
+
+  .info-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+  .info-chip {
+    display: flex; align-items: flex-start; gap: 8px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 10px 12px; flex: 1; min-width: 200px;
+  }
+  .info-chip .chip-icon { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+  .info-chip .chip-label {
+    font-family: var(--font-en); font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.5px; color: var(--text3); margin-bottom: 3px;
+  }
+  .info-chip .chip-text { font-size: 13.5px; color: var(--text); line-height: 1.6; }
+
+  /* ── CODE BLOCK ── */
+  .code-block {
+    background: #0f172a; border-radius: var(--radius-sm);
+    padding: 14px 16px; margin: 10px 0;
+    border-left: 3px solid;
+    overflow-x: auto;
+  }
+  .code-block.html-color { border-color: var(--s4); }
+  .code-block.css-color  { border-color: var(--s5); }
+  .code-block.js-color   { border-color: var(--s6); }
+  .code-block .cb-label {
+    font-family: var(--font-en); font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
+  }
+  .code-block.html-color .cb-label { color: #7dd3fc; }
+  .code-block.css-color  .cb-label { color: #fdba74; }
+  .code-block.js-color   .cb-label { color: #fde68a; }
+  .code-block pre {
+    font-family: var(--font-code); font-size: 13px; color: #e2e8f0;
+    white-space: pre-wrap; line-height: 1.6;
+  }
+  .ct { color: #7dd3fc; } /* tag/property */
+  .cv { color: #86efac; } /* value/string */
+  .cc { color: #fca5a5; } /* selector */
+  .cp { color: #fdba74; } /* property name */
+  .cj { color: #fde68a; } /* js keyword */
+  .cs { color: #c4b5fd; } /* js string/special */
+
+  .example-box {
+    background: linear-gradient(135deg, #1e1b4b, #0f172a);
+    border-radius: var(--radius-sm); padding: 12px 14px;
+    border-left: 3px solid var(--accent); margin-top: 10px;
+  }
+  .example-box .ex-label {
+    font-family: var(--font-en); font-size: 10px; font-weight: 700;
+    color: #a5b4fc; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;
+  }
+  .example-box p { color: #e0e7ff; font-size: 13.5px; line-height: 1.6; }
+
+  .read-check {
+    display: flex; align-items: center; gap: 8px;
+    margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);
+  }
+  .read-check input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; }
+  .read-check label { font-size: 13px; color: var(--text2); cursor: pointer; }
+
+  /* ── VISUAL DEMO BOXES ── */
+  .demo-box {
+    border-radius: var(--radius-sm); padding: 12px 14px;
+    margin: 10px 0; border: 1px dashed var(--border);
+    background: var(--surface2);
+  }
+  .demo-box .d-label {
+    font-family: var(--font-en); font-size: 10px; font-weight: 700;
+    color: var(--text3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
+  }
+
+  /* ── NO RESULTS ── */
+  .no-results {
+    text-align: center; padding: 40px; color: var(--text3); display: none;
+  }
+  .no-results .nr-icon { font-size: 48px; margin-bottom: 12px; }
+
+  /* ── BACK TO TOP ── */
+  .btt {
+    position: fixed; bottom: 24px; right: 20px; z-index: 900;
+    background: linear-gradient(135deg, var(--s4), var(--accent));
+    color: #fff; border: none; border-radius: 50px;
+    padding: 10px 18px; font-size: 13px; font-family: var(--font-en);
+    font-weight: 600; cursor: pointer; box-shadow: var(--shadow-lg);
+    display: none; transition: 0.2s; align-items: center; gap: 6px;
+  }
+  .btt:hover { transform: translateY(-2px); }
+  .btt.visible { display: flex; }
+
+  @media(max-width:480px) {
+    .hero { padding: 30px 14px 24px; }
+    .info-chip { min-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <div class="logo">📘 ProgramDict</div>
+  <div class="search-wrap">
+    <span class="si">🔍</span>
+    <input type="text" id="searchInput" placeholder="যেকোনো term খুঁজুন..." oninput="doSearch(this.value)">
+  </div>
+  <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Dark/Light Toggle">🌙</button>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">Part 2 of 3</div>
+    <h1>
+      <span style="color:#7dd3fc">HTML</span> ·
+      <span style="color:#fdba74">CSS</span> ·
+      <span style="color:#fde68a">JavaScript</span><br>বাংলা ডিকশনারি
+    </h1>
+    <p>Web development-এর তিন মূল প্রযুক্তির সব গুরুত্বপূর্ণ term সহজ বাংলায়</p>
+    <div class="hero-pills">
+      <div class="hero-pill" style="background:rgba(14,165,233,0.2);color:#7dd3fc">🏗️ HTML – ১১টি Term</div>
+      <div class="hero-pill" style="background:rgba(249,115,22,0.2);color:#fdba74">🎨 CSS – ১২টি Term</div>
+      <div class="hero-pill" style="background:rgba(234,179,8,0.2);color:#fde68a">⚡ JS – ৭টি Term</div>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-top">
+    <span>তোমার অগ্রগতি (Part 2)</span>
+    <strong id="progressText">0 / 30</strong>
+  </div>
+  <div class="progress-bar-outer">
+    <div class="progress-bar-inner" id="progressBar" style="width:0%"></div>
+  </div>
+</div>
+
+<!-- JUMP MENU -->
+<div class="jump-menu">
+  <a class="jump-btn s4" href="#sec4">🏗️ S4: HTML Terms</a>
+  <a class="jump-btn s5" href="#sec5">🎨 S5: CSS Terms</a>
+  <a class="jump-btn s6" href="#sec6">⚡ S6: JavaScript Terms</a>
+</div>
+
+<!-- MAIN -->
+<div class="main" id="mainContent">
+  <div class="part-badge"><span>PART 2 — Section 4 to 6</span></div>
+
+  <!-- ═══════════════ SECTION 4: HTML ═══════════════ -->
+  <div id="sec4">
+    <div class="section-header open" onclick="toggleSection(this)">
+      <div class="section-icon" style="background:linear-gradient(135deg,#0ea5e9,#0284c7)">🏗️</div>
+      <div class="section-header-text">
+        <h2>Section 4: HTML Terms</h2>
+        <p>Webpage-এর কাঠামো তৈরির ভাষা — HyperText Markup Language</p>
+      </div>
+      <span class="section-chevron">▼</span>
+    </div>
+    <div class="section-body open" id="body-sec4">
+
+      <!-- Tag -->
+      <div class="term-card" data-term="tag html">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s4bg);color:var(--s4dark)">01</span>
+          <h3>Tag</h3>
+          <span class="bn-title">ট্যাগ</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">HTML-এ কোনো কিছু শুরু ও শেষ বোঝানোর চিহ্ন — &lt;&gt; বন্ধনীর ভেতরে লেখা</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Tag হলো HTML-এর নির্দেশ। Opening tag &lt;p&gt; মানে paragraph শুরু, Closing tag &lt;/p&gt; মানে paragraph শেষ।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block html-color">
+            <div class="cb-label">📄 উদাহরণ</div>
+            <pre><span class="ct">&lt;h1&gt;</span>এটি একটি শিরোনাম<span class="ct">&lt;/h1&gt;</span>
+<span class="ct">&lt;p&gt;</span>এটি একটি paragraph<span class="ct">&lt;/p&gt;</span>
+<span class="ct">&lt;img&gt;</span> <span style="color:#94a3b8">← self-closing tag, / লাগে না</span></pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-tag" onchange="updateProgress()">
+            <label for="chk-tag">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Element -->
+      <div class="term-card" data-term="element html">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s4bg);color:var(--s4dark)">02</span>
+          <h3>Element</h3>
+          <span class="bn-title">এলিমেন্ট</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Opening tag + Content + Closing tag — এই তিনটি মিলে একটি Element</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Tag মানে শুধু চিহ্ন। Element মানে সম্পূর্ণ জিনিস। যেমন সিম্পল বললে: Tag = বাক্সের ঢাকনা, Element = ঢাকনা+বাক্স+ভেতরের জিনিস।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block html-color">
+            <div class="cb-label">📄 উদাহরণ</div>
+            <pre><span style="color:#94a3b8">← এটা একটা সম্পূর্ণ Element:</span>
+<span class="ct">&lt;p&gt;</span><span class="cv">আমি বাংলাদেশে থাকি</span><span class="ct">&lt;/p&gt;</span>
+  ↑          ↑              ↑
+Opening  Content        Closing</pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-element" onchange="updateProgress()">
+            <label for="chk-element">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Attribute -->
+      <div class="term-card" data-term="attribute html">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s4bg);color:var(--s4dark)">03</span>
+          <h3>Attribute</h3>
+          <span class="bn-title">অ্যাট্রিবিউট</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">HTML element-এর অতিরিক্ত তথ্য বা বৈশিষ্ট্য যা tag-এর ভেতরে লেখা হয়</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">মানুষের পরিচয়পত্রে নাম, বয়স, ঠিকানা থাকে — সেগুলোই attribute। Element-কে আরও বিস্তারিত বলে দেওয়া।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block html-color">
+            <div class="cb-label">📄 উদাহরণ</div>
+            <pre><span class="ct">&lt;img</span> <span class="cp">src=</span><span class="cv">"photo.jpg"</span> <span class="cp">alt=</span><span class="cv">"আমার ছবি"</span><span class="ct">&gt;</span>
+<span class="ct">&lt;a</span> <span class="cp">href=</span><span class="cv">"https://google.com"</span><span class="ct">&gt;</span>Google<span class="ct">&lt;/a&gt;</span>
+<span class="ct">&lt;input</span> <span class="cp">type=</span><span class="cv">"text"</span> <span class="cp">placeholder=</span><span class="cv">"নাম লিখুন"</span><span class="ct">&gt;</span></pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-attribute" onchange="updateProgress()">
+            <label for="chk-attribute">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Div -->
+      <div class="term-card" data-term="div html container">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s4bg);color:var(--s4dark)">04</span>
+          <h3>Div</h3>
+          <span class="bn-title">ডিভ / বিভাজন</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Division — একটি generic container যা অন্য element-দের গ্রুপ করে রাখে</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Div হলো একটি অদৃশ্য বাক্স। তার ভেতরে যা খুশি রাখো। CSS দিয়ে সাজাও। HTML-এ সবচেয়ে বেশি ব্যবহৃত tag।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block html-color">
+            <div class="cb-label">📄 উদাহরণ</div>
+            <pre><span class="ct">&lt;div</span> <span class="cp">class=</span><span class="cv">"card"</span><span class="ct">&gt;</span>
+  <span class="ct">&lt;h2&gt;</span>পণ্যের নাম<span class="ct">&lt;/h2&gt;</span>
+  <span class="ct">&lt;p&gt;</span>দাম: ৫০০ টাকা<span class="ct">&lt;/p&gt;</span>
+<span class="ct">&lt;/div&gt;</span></pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-div" onchange="updateProgress()">
+            <label for="chk-div">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Span -->
+      <div class="term-card" data-term="span html inline">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s4bg);color:var(--s4dark)">05</span>
+          <h3>Span</h3>
+          <span class="bn-title">স্প্যান / ইনলাইন</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Div-এর মতো কিন্তু inline — নতুন line-এ যায় না, text-এর মাঝেই থাকে</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Div = পুরো লাইন নেয়। Span = শুধু যতটুকু দরকার। Text-এর একটা অংশে আলাদা color বা style দিতে span।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block html-color">
+            <div class="cb-label">📄 উদাহরণ</div>
+            <pre><span class="ct">&lt;p&gt;</span>দাম: <span class="ct">&lt;span</span> <span class="cp">style=</span><span class="cv">"color:red"</span><span class="ct">&gt;</span>৫০০ টাকা<span class="ct">&lt;/span&gt;</span><span class="ct">&lt;/p&gt;</span>
+<span style="color:#94a3b8">↑ "৫০০ টাকা" অংশটুকুই লাল হবে, বাকিটা না</span></pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-span" onchange="updateProgress()">
+            <label for="chk-span">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Heading -->
+      <div class="term-card" data-term="heading h1 h2 h3">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s4bg);color:var(--s4dark)">06</span>
+          <h3>Heading</h3>
+          <span class="bn-title">হেডিং / শিরোনাম</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">শিরোনাম — h1 থেকে h6 পর্যন্ত, h1 সবচেয়ে বড়, h6 সবচেয়ে ছোট</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">বইয়ে যেমন Chapter title, Sub-title, Section title থাকে — তেমনি webpage-এ h1, h2, h3 দিয়ে hierarchy বোঝানো হয়।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block html-color">
+            <div class="cb-label">📄 উদাহরণ</div>
+            <pre><span class="ct">&lt;h1&gt;</span>সবচেয়ে বড় শিরোনাম<span class="ct">&lt;/h1&gt;</span>   <span style="color:#94a3b8">← Page title</span>
+<span class="ct">&lt;h2&gt;</span>মাঝারি শিরোনাম<span class="ct">&lt;/h2&gt;</span>       <span style="color:#94a3b8">← Section</span>
+<span class="ct">&lt;h3&gt;</span>ছোট শিরোনাম<span class="ct">&lt;/h3&gt;</span>           <span style="color:#94a3b8">← Sub-section</span></pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-heading" onchange="updateProgress()">
+            <label for="chk-heading">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paragraph -->
+      <div class="term-card" data-term="paragraph p html">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s4bg);color:var(--s4dark)">07</span>
+          <h3>Paragraph</h3>
+          <span class="bn-title">প্যারাগ্রাফ</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">সাধারণ body text লেখার জন্য &lt;p&gt; tag</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">কোনো article বা description লিখলে &lt;p&gt; ব্যবহার করো। Browser automatically উপরে-নিচে space দেয়।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block html-color">
+            <div class="cb-label">📄 উদাহরণ</div>
+            <pre><span class="ct">&lt;p&gt;</span>বাংলাদেশ দক্ষিণ এশিয়ার একটি সুন্দর দেশ।
+এখানে ১৭ কোটি মানুষ বাস করে।<span class="ct">&lt;/p&gt;</span></pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-paragraph" onchange="updateProgress()">
+            <label for="chk-paragraph">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Link -->
+      <div class="term-card" data-term="link anchor href html">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s4bg);color:var(--s4dark)">08</span>
+          <h3>Link (Anchor)</h3>
+          <span class="bn-title">লিংক / হাইপারলিংক</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Click করলে অন্য page বা section-এ নিয়ে যাওয়ার &lt;a&gt; tag</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Internet-এর web = link-এর জালের কারণে। একটা page থেকে আরেকটায় যাওয়ার রাস্তাই Link। href-এ destination লেখো।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block html-color">
+            <div class="cb-label">📄 উদাহরণ</div>
+            <pre><span class="ct">&lt;a</span> <span class="cp">href=</span><span class="cv">"https://google.com"</span><span class="ct">&gt;</span>Google যাও<span class="ct">&lt;/a&gt;</span>
+<span class="ct">&lt;a</span> <span class="cp">href=</span><span class="cv">"#section2"</span><span class="ct">&gt;</span>এই page-এ নামো<span class="ct">&lt;/a&gt;</span>
+<span class="ct">&lt;a</span> <span class="cp">href=</span><span class="cv">"tel:01700000000"</span><span class="ct">&gt;</span>Call করো<span class="ct">&lt;/a&gt;</span></pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-link" onchange="updateProgress()">
+            <label for="chk-link">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Image -->
+      <div class="term-card" data-term="image img html">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s4bg);color:var(--s4dark)">09</span>
+          <h3>Image</h3>
+          <span class="bn-title">ছবি / ইমেজ</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Webpage-এ ছবি দেখানোর &lt;img&gt; tag</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">img tag self-closing — closing tag লাগে না। src-এ ছবির path, alt-এ ছবির description দাও। Alt text দৃষ্টিপ্রতিবন্ধীদের জন্য জরুরি।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block html-color">
+            <div class="cb-label">📄 উদাহরণ</div>
+            <pre><span class="ct">&lt;img</span> <span class="cp">src=</span><span class="cv">"banner.jpg"</span>
+     <span class="cp">alt=</span><span class="cv">"আমার website-এর banner"</span>
+     <span class="cp">width=</span><span class="cv">"600"</span><span class="ct">&gt;</span></pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-image" onchange="updateProgress()">
+            <label for="chk-image">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="term-card" data-term="table tr td th html">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s4bg);color:var(--s4dark)">10</span>
+          <h3>Table</h3>
+          <span class="bn-title">টেবিল / সারণি</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Row ও Column-এ data সাজিয়ে দেখানোর HTML structure</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Excel-এর মতো ঘর-ঘর করা। &lt;table&gt; = পুরো table, &lt;tr&gt; = row, &lt;td&gt; = cell, &lt;th&gt; = header cell।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block html-color">
+            <div class="cb-label">📄 উদাহরণ</div>
+            <pre><span class="ct">&lt;table&gt;</span>
+  <span class="ct">&lt;tr&gt;</span><span class="ct">&lt;th&gt;</span>নাম<span class="ct">&lt;/th&gt;</span><span class="ct">&lt;th&gt;</span>বয়স<span class="ct">&lt;/th&gt;</span><span class="ct">&lt;/tr&gt;</span>
+  <span class="ct">&lt;tr&gt;</span><span class="ct">&lt;td&gt;</span>Aminul<span class="ct">&lt;/td&gt;</span><span class="ct">&lt;td&gt;</span>25<span class="ct">&lt;/td&gt;</span><span class="ct">&lt;/tr&gt;</span>
+<span class="ct">&lt;/table&gt;</span></pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-table" onchange="updateProgress()">
+            <label for="chk-table">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="term-card" data-term="form html input submit">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s4bg);color:var(--s4dark)">11</span>
+          <h3>Form</h3>
+          <span class="bn-title">ফর্ম / HTML Form</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">User-এর কাছ থেকে data নেওয়ার জন্য &lt;form&gt; tag ও তার ভেতরের input elements</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Login করার সময় username-password যেখানে লেখো — সেটা HTML Form। Submit করলে server-এ data যায়।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block html-color">
+            <div class="cb-label">📄 উদাহরণ</div>
+            <pre><span class="ct">&lt;form</span> <span class="cp">action=</span><span class="cv">"/login"</span> <span class="cp">method=</span><span class="cv">"POST"</span><span class="ct">&gt;</span>
+  <span class="ct">&lt;input</span> <span class="cp">type=</span><span class="cv">"text"</span>     <span class="cp">placeholder=</span><span class="cv">"ইমেইল"</span><span class="ct">&gt;</span>
+  <span class="ct">&lt;input</span> <span class="cp">type=</span><span class="cv">"password"</span> <span class="cp">placeholder=</span><span class="cv">"পাসওয়ার্ড"</span><span class="ct">&gt;</span>
+  <span class="ct">&lt;button</span> <span class="cp">type=</span><span class="cv">"submit"</span><span class="ct">&gt;</span>Login<span class="ct">&lt;/button&gt;</span>
+<span class="ct">&lt;/form&gt;</span></pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-htmlform" onchange="updateProgress()">
+            <label for="chk-htmlform">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /body-sec4 -->
+  </div><!-- /sec4 -->
+
+
+  <!-- ═══════════════ SECTION 5: CSS ═══════════════ -->
+  <div id="sec5">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon" style="background:linear-gradient(135deg,#f97316,#ea580c)">🎨</div>
+      <div class="section-header-text">
+        <h2>Section 5: CSS Terms</h2>
+        <p>HTML-কে সুন্দর করার ভাষা — Cascading Style Sheets</p>
+      </div>
+      <span class="section-chevron">▼</span>
+    </div>
+    <div class="section-body" id="body-sec5">
+
+      <!-- Color -->
+      <div class="term-card" data-term="color css">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s5bg);color:var(--s5dark)">01</span>
+          <h3>Color</h3>
+          <span class="bn-title">রঙ</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Text বা element-এর রঙ নির্ধারণ করার CSS property</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">CSS-এ রঙ তিনভাবে দেওয়া যায়: Name (red, blue), HEX (#ff0000), RGB (rgb(255,0,0))।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block css-color">
+            <div class="cb-label">🎨 উদাহরণ</div>
+            <pre><span class="cc">h1</span> { <span class="cp">color</span>: <span class="cv">red</span>; }
+<span class="cc">p</span>  { <span class="cp">color</span>: <span class="cv">#4f46e5</span>; }  <span style="color:#94a3b8">← HEX</span>
+<span class="cc">.title</span> { <span class="cp">color</span>: <span class="cv">rgb(255, 100, 0)</span>; }</pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-color" onchange="updateProgress()">
+            <label for="chk-color">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Background -->
+      <div class="term-card" data-term="background css">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s5bg);color:var(--s5dark)">02</span>
+          <h3>Background</h3>
+          <span class="bn-title">ব্যাকগ্রাউন্ড / পটভূমি</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Element-এর পেছনের রঙ বা ছবি সেট করা</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">ঘরের দেয়ালের রঙ বা wallpaper = Background। Solid color, gradient, বা image হতে পারে।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block css-color">
+            <div class="cb-label">🎨 উদাহরণ</div>
+            <pre><span class="cc">body</span> { <span class="cp">background-color</span>: <span class="cv">#f0f2fa</span>; }
+<span class="cc">.hero</span> {
+  <span class="cp">background</span>: <span class="cv">linear-gradient(135deg, #4f46e5, #7c3aed)</span>;
+}
+<span class="cc">.banner</span> {
+  <span class="cp">background-image</span>: <span class="cv">url('bg.jpg')</span>;
+}</pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-background" onchange="updateProgress()">
+            <label for="chk-background">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Margin -->
+      <div class="term-card" data-term="margin css space outside">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s5bg);color:var(--s5dark)">03</span>
+          <h3>Margin</h3>
+          <span class="bn-title">মার্জিন / বাইরের ফাঁকা</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Element-এর বাইরের ফাঁকা জায়গা — অন্য element থেকে দূরত্ব</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">বাড়ি থেকে রাস্তার দূরত্ব = Margin। দুটো element-এর মাঝখানের ফাঁকা space।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block css-color">
+            <div class="cb-label">🎨 উদাহরণ</div>
+            <pre><span class="cc">.card</span> {
+  <span class="cp">margin</span>: <span class="cv">20px</span>;          <span style="color:#94a3b8">← চারদিকে 20px</span>
+  <span class="cp">margin-top</span>: <span class="cv">10px</span>;      <span style="color:#94a3b8">← শুধু উপরে</span>
+  <span class="cp">margin</span>: <span class="cv">10px 20px</span>;    <span style="color:#94a3b8">← উপর-নিচ, বাম-ডান</span>
+  <span class="cp">margin</span>: <span class="cv">auto</span>;          <span style="color:#94a3b8">← মাঝখানে center করে</span>
+}</pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-margin" onchange="updateProgress()">
+            <label for="chk-margin">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Padding -->
+      <div class="term-card" data-term="padding css space inside">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s5bg);color:var(--s5dark)">04</span>
+          <h3>Padding</h3>
+          <span class="bn-title">প্যাডিং / ভেতরের ফাঁকা</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Element-এর ভেতরের ফাঁকা জায়গা — content ও border-এর মধ্যে</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">বাক্সের ভেতরে foam বা bubble wrap = Padding। Content-কে border থেকে দূরে রাখে।<br><strong>মনে রাখো: Margin = বাইরে, Padding = ভেতরে।</strong></div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block css-color">
+            <div class="cb-label">🎨 উদাহরণ</div>
+            <pre><span class="cc">button</span> {
+  <span class="cp">padding</span>: <span class="cv">12px 24px</span>;  <span style="color:#94a3b8">← উপর-নিচ 12, বাম-ডান 24</span>
+}
+<span class="cc">.card</span> {
+  <span class="cp">padding</span>: <span class="cv">20px</span>;       <span style="color:#94a3b8">← চারদিকে 20px breathing room</span>
+}</pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-padding" onchange="updateProgress()">
+            <label for="chk-padding">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Border -->
+      <div class="term-card" data-term="border css outline">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s5bg);color:var(--s5dark)">05</span>
+          <h3>Border</h3>
+          <span class="bn-title">বর্ডার / সীমানা</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Element-এর চারদিকের রেখা বা সীমানা</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">বাড়ির চারদিকের দেয়াল বা fence = Border। Thickness, style (solid/dashed), color সব set করা যায়।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block css-color">
+            <div class="cb-label">🎨 উদাহরণ</div>
+            <pre><span class="cc">.box</span> {
+  <span class="cp">border</span>: <span class="cv">2px solid #4f46e5</span>;
+  <span class="cp">border-radius</span>: <span class="cv">10px</span>;     <span style="color:#94a3b8">← গোলাকার কোণ</span>
+  <span class="cp">border-left</span>: <span class="cv">4px solid red</span>; <span style="color:#94a3b8">← শুধু বাম দিকে</span>
+}</pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-border" onchange="updateProgress()">
+            <label for="chk-border">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Display -->
+      <div class="term-card" data-term="display css block inline flex">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s5bg);color:var(--s5dark)">06</span>
+          <h3>Display</h3>
+          <span class="bn-title">ডিসপ্লে / প্রদর্শন</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Element কীভাবে layout-এ জায়গা নেবে সেটা নির্ধারণ করা</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text"><strong>block</strong> = পুরো line নেয় (div, p, h1)। <strong>inline</strong> = শুধু প্রয়োজনমতো (span, a)। <strong>none</strong> = লুকিয়ে ফেলে।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block css-color">
+            <div class="cb-label">🎨 উদাহরণ</div>
+            <pre><span class="cc">.hide</span>   { <span class="cp">display</span>: <span class="cv">none</span>; }      <span style="color:#94a3b8">← অদৃশ্য</span>
+<span class="cc">.show</span>   { <span class="cp">display</span>: <span class="cv">block</span>; }     <span style="color:#94a3b8">← পুরো line</span>
+<span class="cc">.inline</span> { <span class="cp">display</span>: <span class="cv">inline</span>; }    <span style="color:#94a3b8">← ভেতরে ভেতরে</span>
+<span class="cc">.flex</span>   { <span class="cp">display</span>: <span class="cv">flex</span>; }      <span style="color:#94a3b8">← flexbox layout</span></pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-display" onchange="updateProgress()">
+            <label for="chk-display">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Flexbox -->
+      <div class="term-card" data-term="flexbox flex css layout">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s5bg);color:var(--s5dark)">07</span>
+          <h3>Flexbox</h3>
+          <span class="bn-title">ফ্লেক্সবক্স</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Elements-কে row বা column-এ সহজে সাজানোর CSS layout system</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Flexbox = smart organizer। সে নিজেই সব elements-কে সমান ভাগ করে, মাঝখানে রাখে, ফাঁক দেয়। কঠিন layout সহজ হয়ে যায়।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block css-color">
+            <div class="cb-label">🎨 উদাহরণ</div>
+            <pre><span class="cc">.nav</span> {
+  <span class="cp">display</span>: <span class="cv">flex</span>;
+  <span class="cp">justify-content</span>: <span class="cv">space-between</span>; <span style="color:#94a3b8">← দুই পাশে</span>
+  <span class="cp">align-items</span>: <span class="cv">center</span>;           <span style="color:#94a3b8">← মাঝখানে উপর-নিচ</span>
+  <span class="cp">gap</span>: <span class="cv">16px</span>;                       <span style="color:#94a3b8">← মাঝে ফাঁক</span>
+}</pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-flexbox" onchange="updateProgress()">
+            <label for="chk-flexbox">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid -->
+      <div class="term-card" data-term="grid css layout columns rows">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s5bg);color:var(--s5dark)">08</span>
+          <h3>Grid</h3>
+          <span class="bn-title">গ্রিড / জাল বিন্যাস</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Row ও Column দুটো দিক নিয়ন্ত্রণ করে layout বানানোর CSS system</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Flexbox = একদিকে (row বা column)। Grid = দুই দিকেই। Chess board-এর মতো ঘর-ঘর করে layout।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block css-color">
+            <div class="cb-label">🎨 উদাহরণ</div>
+            <pre><span class="cc">.product-list</span> {
+  <span class="cp">display</span>: <span class="cv">grid</span>;
+  <span class="cp">grid-template-columns</span>: <span class="cv">repeat(3, 1fr)</span>; <span style="color:#94a3b8">← ৩ কলাম</span>
+  <span class="cp">gap</span>: <span class="cv">20px</span>;
+}</pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-grid" onchange="updateProgress()">
+            <label for="chk-grid">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Position -->
+      <div class="term-card" data-term="position css absolute relative fixed sticky">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s5bg);color:var(--s5dark)">09</span>
+          <h3>Position</h3>
+          <span class="bn-title">পজিশন / অবস্থান</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Element ঠিক কোথায় থাকবে সেটা নির্ধারণ করা</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text"><strong>static</strong> = স্বাভাবিক। <strong>relative</strong> = নিজের জায়গা থেকে সরে। <strong>absolute</strong> = parent-এর মধ্যে fixed। <strong>sticky</strong> = scroll করলেও আটকে থাকে।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block css-color">
+            <div class="cb-label">🎨 উদাহরণ</div>
+            <pre><span class="cc">.topnav</span> {
+  <span class="cp">position</span>: <span class="cv">sticky</span>;  <span style="color:#94a3b8">← scroll করলেও উপরে থাকে</span>
+  <span class="cp">top</span>: <span class="cv">0</span>;
+}
+<span class="cc">.badge</span> {
+  <span class="cp">position</span>: <span class="cv">absolute</span>;
+  <span class="cp">top</span>: <span class="cv">-8px</span>; <span class="cp">right</span>: <span class="cv">-8px</span>;  <span style="color:#94a3b8">← কোণায় বসানো</span>
+}</pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-position" onchange="updateProgress()">
+            <label for="chk-position">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Animation -->
+      <div class="term-card" data-term="animation css keyframe">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s5bg);color:var(--s5dark)">10</span>
+          <h3>Animation</h3>
+          <span class="bn-title">অ্যানিমেশন</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">CSS দিয়ে element-কে নড়াচড়া করানো বা রূপান্তর করানো</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">@keyframes দিয়ে শুরু থেকে শেষের অবস্থা বলো, CSS বাকি সব নিজে করবে। Loading spinner, fade in, slide — সব animation।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block css-color">
+            <div class="cb-label">🎨 উদাহরণ</div>
+            <pre><span class="cp">@keyframes</span> <span class="cv">spin</span> {
+  <span class="cv">from</span> { <span class="cp">transform</span>: <span class="cv">rotate(0deg)</span>; }
+  <span class="cv">to</span>   { <span class="cp">transform</span>: <span class="cv">rotate(360deg)</span>; }
+}
+<span class="cc">.spinner</span> {
+  <span class="cp">animation</span>: <span class="cv">spin 1s linear infinite</span>;
+}</pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-animation" onchange="updateProgress()">
+            <label for="chk-animation">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transition -->
+      <div class="term-card" data-term="transition css hover smooth">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s5bg);color:var(--s5dark)">11</span>
+          <h3>Transition</h3>
+          <span class="bn-title">ট্রানজিশন / মসৃণ পরিবর্তন</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">CSS-এর কোনো property পরিবর্তনকে ধীরে ধীরে smooth করে দেখানো</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Button hover করলে হঠাৎ রঙ না বদলে আস্তে আস্তে বদলানো = Transition। Animation-এর মতো কিন্তু সহজ। শুধু একটা লাইন লাগে।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block css-color">
+            <div class="cb-label">🎨 উদাহরণ</div>
+            <pre><span class="cc">button</span> {
+  <span class="cp">background</span>: <span class="cv">blue</span>;
+  <span class="cp">transition</span>: <span class="cv">background 0.3s ease</span>;
+}
+<span class="cc">button:hover</span> {
+  <span class="cp">background</span>: <span class="cv">purple</span>;  <span style="color:#94a3b8">← আস্তে আস্তে বদলাবে</span>
+}</pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-transition" onchange="updateProgress()">
+            <label for="chk-transition">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Responsive Design -->
+      <div class="term-card" data-term="responsive design media query mobile css">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s5bg);color:var(--s5dark)">12</span>
+          <h3>Responsive Design</h3>
+          <span class="bn-title">রেসপন্সিভ ডিজাইন</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Website যে screen-এ দেখা যাচ্ছে তার size অনুযায়ী নিজেকে মানিয়ে নেওয়া</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Mobile, Tablet, Desktop — তিন ধরনের screen-এ একই website সুন্দর দেখা = Responsive। @media query দিয়ে করা হয়।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block css-color">
+            <div class="cb-label">🎨 উদাহরণ</div>
+            <pre><span style="color:#94a3b8">/* Desktop: 3 column */</span>
+<span class="cc">.grid</span> { <span class="cp">grid-template-columns</span>: <span class="cv">repeat(3, 1fr)</span>; }
+
+<span style="color:#94a3b8">/* Mobile: 1 column */</span>
+<span class="cp">@media</span> (<span class="cv">max-width: 480px</span>) {
+  <span class="cc">.grid</span> { <span class="cp">grid-template-columns</span>: <span class="cv">1fr</span>; }
+}</pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-responsive" onchange="updateProgress()">
+            <label for="chk-responsive">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /body-sec5 -->
+  </div><!-- /sec5 -->
+
+
+  <!-- ═══════════════ SECTION 6: JavaScript ═══════════════ -->
+  <div id="sec6">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon" style="background:linear-gradient(135deg,#eab308,#ca8a04)">⚡</div>
+      <div class="section-header-text">
+        <h2>Section 6: JavaScript Terms</h2>
+        <p>Webpage-কে জীবন্ত ও interactive করার ভাষা</p>
+      </div>
+      <span class="section-chevron">▼</span>
+    </div>
+    <div class="section-body" id="body-sec6">
+
+      <!-- Variable JS -->
+      <div class="term-card" data-term="variable let const var javascript">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s6bg);color:var(--s6dark)">01</span>
+          <h3>Variable (let / const / var)</h3>
+          <span class="bn-title">ভেরিয়েবল – JS</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">JavaScript-এ data রাখার জায়গা। তিনটি keyword: let, const, var</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">পার্থক্য</div>
+                <div class="chip-text"><strong>let</strong> = পরিবর্তনযোগ্য, নতুন style। <strong>const</strong> = পরিবর্তনহীন। <strong>var</strong> = পুরনো style, এখন কম ব্যবহার হয়।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block js-color">
+            <div class="cb-label">⚡ উদাহরণ</div>
+            <pre><span class="cj">let</span>   name  = <span class="cv">"Aminul"</span>;    <span style="color:#94a3b8">← পরে বদলানো যাবে</span>
+<span class="cj">const</span> PI    = <span class="cv">3.14159</span>;    <span style="color:#94a3b8">← বদলানো যাবে না</span>
+<span class="cj">let</span>   count = <span class="cv">0</span>;
+count = count + <span class="cv">1</span>;          <span style="color:#94a3b8">← এখন count = 1</span></pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-jsvar" onchange="updateProgress()">
+            <label for="chk-jsvar">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Function JS -->
+      <div class="term-card" data-term="function javascript arrow">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s6bg);color:var(--s6dark)">02</span>
+          <h3>Function</h3>
+          <span class="bn-title">ফাংশন – JS</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">বারবার ব্যবহারযোগ্য code-এর block। Traditional ও Arrow function দুটোই আছে।</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Arrow function (=>) হলো modern shortcut। একই কাজ কম লেখায়। আজকের JS-এ Arrow function বেশি ব্যবহার হয়।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block js-color">
+            <div class="cb-label">⚡ উদাহরণ</div>
+            <pre><span style="color:#94a3b8">// Traditional function</span>
+<span class="cj">function</span> greet(name) {
+  <span class="cj">return</span> <span class="cv">"হ্যালো, "</span> + name;
+}
+
+<span style="color:#94a3b8">// Arrow function (modern)</span>
+<span class="cj">const</span> greet = (name) => <span class="cv">"হ্যালো, "</span> + name;
+
+greet(<span class="cv">"Aminul"</span>); <span style="color:#94a3b8">← "হ্যালো, Aminul"</span></pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-jsfunc" onchange="updateProgress()">
+            <label for="chk-jsfunc">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Event JS -->
+      <div class="term-card" data-term="event listener javascript click">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s6bg);color:var(--s6dark)">03</span>
+          <h3>Event &amp; Listener</h3>
+          <span class="bn-title">ইভেন্ট ও লিসেনার</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Event = user-এর action (click, scroll, keypress)। Listener = সেই action-এর জন্য অপেক্ষারত code।</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">দারোয়ান সবসময় দরজায় থাকে, কেউ knock করলে ভেতরে জানায় = Event Listener। JavaScript সবসময় "শুনছে", event হলে কাজ করে।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block js-color">
+            <div class="cb-label">⚡ উদাহরণ</div>
+            <pre><span class="cj">const</span> btn = document.getElementById(<span class="cv">'myBtn'</span>);
+
+btn.addEventListener(<span class="cv">'click'</span>, () => {
+  alert(<span class="cv">'Button-এ click হয়েছে!'</span>);
+});
+
+<span style="color:#94a3b8">// অন্য events: 'scroll', 'keydown', 'submit'</span></pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-jsevent" onchange="updateProgress()">
+            <label for="chk-jsevent">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- DOM JS -->
+      <div class="term-card" data-term="dom javascript document getelementbyid queryselector">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s6bg);color:var(--s6dark)">04</span>
+          <h3>DOM Manipulation</h3>
+          <span class="bn-title">ডম ম্যানিপুলেশন</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">JavaScript দিয়ে HTML element খোঁজা, পড়া, পরিবর্তন করা</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">HTML লেখার পরে JS দিয়ে সেই HTML-এর যেকোনো অংশ real-time-এ বদলানো যায় — text, color, class, visibility সব।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block js-color">
+            <div class="cb-label">⚡ উদাহরণ</div>
+            <pre><span style="color:#94a3b8">// Element খোঁজা</span>
+<span class="cj">const</span> title = document.getElementById(<span class="cv">'title'</span>);
+<span class="cj">const</span> cards = document.querySelectorAll(<span class="cv">'.card'</span>);
+
+<span style="color:#94a3b8">// পরিবর্তন করা</span>
+title.textContent = <span class="cv">'নতুন শিরোনাম'</span>;
+title.style.color = <span class="cv">'red'</span>;
+title.classList.add(<span class="cv">'active'</span>);</pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-jsdom" onchange="updateProgress()">
+            <label for="chk-jsdom">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fetch API -->
+      <div class="term-card" data-term="fetch api javascript async await">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s6bg);color:var(--s6dark)">05</span>
+          <h3>Fetch API</h3>
+          <span class="bn-title">ফেচ এপিআই</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">JavaScript দিয়ে server বা external API থেকে data আনার modern পদ্ধতি</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Page reload না করেই background-এ server থেকে নতুন data আনা = Fetch। Facebook-এ scroll করলে নতুন post আসে — এটাই Fetch API।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block js-color">
+            <div class="cb-label">⚡ উদাহরণ</div>
+            <pre><span class="cj">async function</span> getData() {
+  <span class="cj">const</span> response = <span class="cj">await</span> fetch(<span class="cv">'https://api.example.com/users'</span>);
+  <span class="cj">const</span> data = <span class="cj">await</span> response.json();
+  console.log(data); <span style="color:#94a3b8">← data এসে গেছে!</span>
+}
+getData();</pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-fetchapi" onchange="updateProgress()">
+            <label for="chk-fetchapi">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- LocalStorage -->
+      <div class="term-card" data-term="localstorage javascript browser storage save">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s6bg);color:var(--s6dark)">06</span>
+          <h3>LocalStorage</h3>
+          <span class="bn-title">লোকাল স্টোরেজ</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Browser-এ permanently data save করার জায়গা — server ছাড়াই</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">তোমার phone-এর টুকিটাকি settings মনে রাখার মতো। Page বন্ধ করলেও, Browser বন্ধ করলেও data থাকে। Server দরকার নেই।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block js-color">
+            <div class="cb-label">⚡ উদাহরণ</div>
+            <pre><span style="color:#94a3b8">// Save করা</span>
+localStorage.setItem(<span class="cv">'theme'</span>, <span class="cv">'dark'</span>);
+localStorage.setItem(<span class="cv">'name'</span>, <span class="cv">'Aminul'</span>);
+
+<span style="color:#94a3b8">// পড়া</span>
+<span class="cj">const</span> theme = localStorage.getItem(<span class="cv">'theme'</span>);
+
+<span style="color:#94a3b8">// মুছে ফেলা</span>
+localStorage.removeItem(<span class="cv">'theme'</span>);</pre>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব ব্যবহার</div>
+            <p>এই page-এর Dark/Light mode choice ও তোমার "পড়া হয়েছে" progress — সবই LocalStorage-এ save হচ্ছে!</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-localstorage" onchange="updateProgress()">
+            <label for="chk-localstorage">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- SessionStorage -->
+      <div class="term-card" data-term="sessionstorage javascript session browser">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:var(--s6bg);color:var(--s6dark)">07</span>
+          <h3>SessionStorage</h3>
+          <span class="bn-title">সেশন স্টোরেজ</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div>
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">LocalStorage-এর মতো, কিন্তু Browser tab বন্ধ করলে data মুছে যায়</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div>
+                <div class="chip-label">পার্থক্য</div>
+                <div class="chip-text"><strong>LocalStorage</strong> = চিরকাল থাকে (না মুছলে)। <strong>SessionStorage</strong> = tab বন্ধ মানেই শেষ। যেমন shopping cart preview।</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block js-color">
+            <div class="cb-label">⚡ উদাহরণ</div>
+            <pre><span style="color:#94a3b8">// একই syntax, কিন্তু tab বন্ধে মুছে যায়</span>
+sessionStorage.setItem(<span class="cv">'tempData'</span>, <span class="cv">'12345'</span>);
+<span class="cj">const</span> temp = sessionStorage.getItem(<span class="cv">'tempData'</span>);
+
+<span style="color:#94a3b8">// ব্যবহার: wizard form-এর step data,</span>
+<span style="color:#94a3b8">// one-time login session info</span></pre>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-sessionstorage" onchange="updateProgress()">
+            <label for="chk-sessionstorage">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /body-sec6 -->
+  </div><!-- /sec6 -->
+
+  <div class="no-results" id="noResults">
+    <div class="nr-icon">🔍</div>
+    <p>কোনো result পাওয়া যায়নি।</p>
+  </div>
+
+</div><!-- /main -->
+
+<!-- BACK TO TOP -->
+<button class="btt" id="bttBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">⬆ উপরে</button>
+
+<script>
+// ── THEME ──
+let dark = localStorage.getItem('pd-theme') === 'dark';
+function applyTheme() {
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  document.getElementById('themeBtn').textContent = dark ? '☀️' : '🌙';
+  localStorage.setItem('pd-theme', dark ? 'dark' : 'light');
+}
+applyTheme();
+function toggleTheme() { dark = !dark; applyTheme(); }
+
+// ── ACCORDION ──
+function toggleSection(header) {
+  header.classList.toggle('open');
+  header.nextElementSibling.classList.toggle('open');
+}
+function toggleTerm(card) {
+  card.classList.toggle('open');
+  saveProgress();
+}
+
+// ── PROGRESS ──
+const TOTAL = 30;
+function updateProgress() {
+  const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+  document.getElementById('progressText').textContent = checked + ' / ' + TOTAL;
+  const pct = Math.round((checked / TOTAL) * 100);
+  document.getElementById('progressBar').style.width = pct + '%';
+  saveProgress();
+}
+function saveProgress() {
+  const state = {};
+  document.querySelectorAll('input[type="checkbox"]').forEach(cb => { state[cb.id] = cb.checked; });
+  localStorage.setItem('pd-progress-p2', JSON.stringify(state));
+}
+function loadProgress() {
+  const saved = localStorage.getItem('pd-progress-p2');
+  if (!saved) return;
+  const state = JSON.parse(saved);
+  Object.keys(state).forEach(id => { const el = document.getElementById(id); if (el) el.checked = state[id]; });
+  updateProgress();
+}
+loadProgress();
+
+// ── SEARCH ──
+function doSearch(q) {
+  q = q.trim().toLowerCase();
+  const noRes = document.getElementById('noResults');
+  const allCards = document.querySelectorAll('.term-card');
+  let found = 0;
+  if (!q) {
+    allCards.forEach(c => c.style.display = '');
+    noRes.style.display = 'none';
+    return;
+  }
+  allCards.forEach(card => {
+    const term = (card.dataset.term || '').toLowerCase();
+    const text = card.textContent.toLowerCase();
+    if (term.includes(q) || text.includes(q)) {
+      card.style.display = '';
+      card.classList.add('open');
+      let parent = card.closest('.section-body');
+      if (parent) { parent.classList.add('open'); parent.previousElementSibling && parent.previousElementSibling.classList.add('open'); }
+      found++;
+    } else { card.style.display = 'none'; }
+  });
+  noRes.style.display = found === 0 ? 'block' : 'none';
+}
+
+// ── BACK TO TOP ──
+window.addEventListener('scroll', () => {
+  document.getElementById('bttBtn').classList.toggle('visible', window.scrollY > 400);
+});
+
+// ── JUMP ACTIVE ──
+const secs = ['sec4','sec5','sec6'];
+window.addEventListener('scroll', () => {
+  const btns = document.querySelectorAll('.jump-btn');
+  secs.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    if (r.top <= 100 && r.bottom >= 100) {
+      btns.forEach(b => b.classList.remove('active'));
+      btns[i] && btns[i].classList.add('active');
+    }
+  });
+});
+</script>
+<script>
+if ("serviceWorker" in navigator && location.protocol === "https:") {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js")
+      .then(() => console.log("SW registered"))
+      .catch(e => console.log("SW skipped:", e));
+  });
+}
+</script>
+</body>
+</html>

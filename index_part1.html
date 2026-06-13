@@ -1,0 +1,2371 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1a1a2e">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ProgramDict">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Programming Dictionary – Bangla | Part 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f8fc;
+    --surface: #ffffff;
+    --surface2: #f0f2fa;
+    --border: #e2e5f0;
+    --text: #1a1d2e;
+    --text2: #4a4f6a;
+    --text3: #7c82a0;
+    --accent: #4f46e5;
+    --accent2: #7c3aed;
+    --accent3: #0ea5e9;
+    --green: #059669;
+    --orange: #ea580c;
+    --pink: #db2777;
+    --yellow: #d97706;
+    --shadow: 0 2px 16px rgba(79,70,229,0.08);
+    --shadow-lg: 0 8px 40px rgba(79,70,229,0.13);
+    --radius: 14px;
+    --radius-sm: 8px;
+    --font-bn: 'Noto Serif Bengali', serif;
+    --font-en: 'Inter', sans-serif;
+    --font-code: 'Fira Code', monospace;
+  }
+  [data-theme="dark"] {
+    --bg: #0f1117;
+    --surface: #1a1d2e;
+    --surface2: #232640;
+    --border: #2e3250;
+    --text: #e8eaf6;
+    --text2: #b0b8d8;
+    --text3: #6e78a0;
+    --shadow: 0 2px 16px rgba(0,0,0,0.3);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.4);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-bn);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    transition: background 0.3s, color 0.3s;
+    min-height: 100vh;
+  }
+
+  /* ── TOP NAV ─────────────────────────────────── */
+  .topnav {
+    position: sticky; top: 0; z-index: 999;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    padding: 0 16px;
+    display: flex; align-items: center; gap: 10px;
+    height: 58px;
+  }
+  .topnav .logo {
+    font-family: var(--font-en);
+    font-weight: 700; font-size: 17px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    white-space: nowrap;
+  }
+  .topnav .search-wrap {
+    flex: 1; position: relative;
+  }
+  .topnav .search-wrap input {
+    width: 100%; padding: 8px 12px 8px 36px;
+    border: 1.5px solid var(--border); border-radius: 50px;
+    background: var(--surface2); color: var(--text);
+    font-family: var(--font-bn); font-size: 14px;
+    outline: none; transition: border 0.2s;
+  }
+  .topnav .search-wrap input:focus { border-color: var(--accent); }
+  .topnav .search-wrap .si {
+    position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+    color: var(--text3); pointer-events: none; font-size: 15px;
+  }
+  .topnav .theme-btn {
+    background: var(--surface2); border: 1.5px solid var(--border);
+    border-radius: 50%; width: 38px; height: 38px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; color: var(--text2); transition: 0.2s; flex-shrink: 0;
+  }
+  .topnav .theme-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* ── HERO ─────────────────────────────────────── */
+  .hero {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: #fff; padding: 48px 20px 40px;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(79,70,229,0.3) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 30%, rgba(124,58,237,0.2) 0%, transparent 50%);
+  }
+  .hero-content { position: relative; }
+  .hero-badge {
+    display: inline-block; background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2); border-radius: 50px;
+    padding: 5px 16px; font-family: var(--font-en); font-size: 12px;
+    font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+    color: #a5b4fc; margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-size: clamp(22px, 5vw, 36px); font-weight: 700;
+    line-height: 1.3; margin-bottom: 10px;
+  }
+  .hero h1 span { color: #a5b4fc; }
+  .hero p { font-size: 15px; color: rgba(255,255,255,0.7); max-width: 500px; margin: 0 auto 24px; }
+  .hero-stats {
+    display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;
+  }
+  .hero-stat {
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 10px; padding: 10px 18px; text-align: center;
+  }
+  .hero-stat .num { font-family: var(--font-en); font-size: 22px; font-weight: 700; color: #a5b4fc; }
+  .hero-stat .lbl { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+
+  /* ── PROGRESS BAR ─────────────────────────────── */
+  .progress-wrap {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+  }
+  .progress-top {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 6px; font-size: 13px; color: var(--text2);
+  }
+  .progress-top strong { color: var(--accent); font-family: var(--font-en); }
+  .progress-bar-outer {
+    background: var(--border); border-radius: 50px; height: 8px; overflow: hidden;
+  }
+  .progress-bar-inner {
+    height: 100%; border-radius: 50px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transition: width 0.5s ease;
+  }
+
+  /* ── SECTION JUMP MENU ───────────────────────── */
+  .jump-menu {
+    background: var(--surface2); border-bottom: 1px solid var(--border);
+    padding: 10px 16px; overflow-x: auto; display: flex; gap: 8px;
+    scrollbar-width: none;
+  }
+  .jump-menu::-webkit-scrollbar { display: none; }
+  .jump-btn {
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 50px; padding: 6px 14px; white-space: nowrap;
+    font-size: 12px; font-family: var(--font-en); font-weight: 600;
+    color: var(--text2); cursor: pointer; transition: 0.2s; text-decoration: none;
+  }
+  .jump-btn:hover, .jump-btn.active {
+    background: var(--accent); border-color: var(--accent); color: #fff;
+  }
+
+  /* ── MAIN LAYOUT ─────────────────────────────── */
+  .main { max-width: 860px; margin: 0 auto; padding: 24px 16px 80px; }
+
+  /* ── SECTION HEADER ──────────────────────────── */
+  .section-header {
+    display: flex; align-items: center; gap: 12px;
+    margin: 36px 0 18px; cursor: pointer;
+    background: var(--surface); border-radius: var(--radius);
+    padding: 16px 20px; border: 1.5px solid var(--border);
+    box-shadow: var(--shadow); user-select: none;
+    transition: 0.2s;
+  }
+  .section-header:hover { border-color: var(--accent); }
+  .section-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+  .section-header-text { flex: 1; }
+  .section-header-text h2 {
+    font-size: 17px; font-weight: 700; color: var(--text);
+  }
+  .section-header-text p { font-size: 12px; color: var(--text3); margin-top: 2px; }
+  .section-chevron {
+    color: var(--text3); font-size: 18px; transition: transform 0.3s;
+    font-family: var(--font-en);
+  }
+  .section-header.open .section-chevron { transform: rotate(180deg); }
+  .section-body { display: none; }
+  .section-body.open { display: block; }
+
+  /* ── TERM CARD ───────────────────────────────── */
+  .term-card {
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: var(--radius); margin-bottom: 14px;
+    overflow: hidden; box-shadow: var(--shadow);
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+  .term-card:hover { box-shadow: var(--shadow-lg); border-color: var(--accent); }
+  .term-card-header {
+    padding: 14px 18px; display: flex; align-items: center; gap: 12px;
+    cursor: pointer; user-select: none;
+  }
+  .term-badge {
+    font-family: var(--font-en); font-size: 11px; font-weight: 700;
+    padding: 3px 10px; border-radius: 50px; white-space: nowrap; flex-shrink: 0;
+  }
+  .term-card-header h3 {
+    font-family: var(--font-en); font-size: 16px; font-weight: 700;
+    color: var(--text); flex: 1;
+  }
+  .term-card-header .bn-title {
+    font-family: var(--font-bn); font-size: 13px;
+    color: var(--text2); font-weight: 600;
+  }
+  .term-chevron { color: var(--text3); font-size: 14px; transition: transform 0.3s; }
+  .term-card.open .term-chevron { transform: rotate(180deg); }
+  .term-body { display: none; padding: 0 18px 18px; }
+  .term-card.open .term-body { display: block; }
+
+  .info-row {
+    display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px;
+  }
+  .info-chip {
+    display: flex; align-items: flex-start; gap: 8px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 10px 12px; flex: 1; min-width: 200px;
+  }
+  .info-chip .chip-icon { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+  .info-chip .chip-content {}
+  .info-chip .chip-label {
+    font-family: var(--font-en); font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.5px; color: var(--text3);
+    margin-bottom: 3px;
+  }
+  .info-chip .chip-text { font-size: 13.5px; color: var(--text); line-height: 1.6; }
+
+  .example-box {
+    background: linear-gradient(135deg, #1e1b4b, #1a1a2e);
+    border-radius: var(--radius-sm); padding: 12px 14px;
+    border-left: 3px solid var(--accent);
+    margin-top: 10px;
+  }
+  .example-box .ex-label {
+    font-family: var(--font-en); font-size: 10px; font-weight: 700;
+    color: #a5b4fc; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;
+  }
+  .example-box p { color: #e0e7ff; font-size: 13.5px; line-height: 1.6; }
+
+  .read-check {
+    display: flex; align-items: center; gap: 8px;
+    margin-top: 12px; padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .read-check input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; }
+  .read-check label { font-size: 13px; color: var(--text2); cursor: pointer; }
+
+  /* ── SEARCH HIGHLIGHT ────────────────────────── */
+  .hl { background: #fef08a; color: #1a1a2e; border-radius: 3px; padding: 0 2px; }
+  [data-theme="dark"] .hl { background: #854d0e; color: #fef9c3; }
+
+  /* ── NO RESULTS ──────────────────────────────── */
+  .no-results {
+    text-align: center; padding: 40px; color: var(--text3);
+    display: none;
+  }
+  .no-results .nr-icon { font-size: 48px; margin-bottom: 12px; }
+  .no-results p { font-size: 15px; }
+
+  /* ── BACK TO TOP ─────────────────────────────── */
+  .btt {
+    position: fixed; bottom: 24px; right: 20px; z-index: 900;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff; border: none; border-radius: 50px;
+    padding: 10px 18px; font-size: 13px; font-family: var(--font-en);
+    font-weight: 600; cursor: pointer; box-shadow: var(--shadow-lg);
+    display: none; transition: 0.2s; align-items: center; gap: 6px;
+  }
+  .btt:hover { transform: translateY(-2px); }
+  .btt.visible { display: flex; }
+
+  /* ── PART BADGE ──────────────────────────────── */
+  .part-badge {
+    text-align: center; padding: 10px;
+    margin-bottom: 8px;
+  }
+  .part-badge span {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff; font-family: var(--font-en); font-size: 12px;
+    font-weight: 700; padding: 5px 18px; border-radius: 50px;
+    letter-spacing: 1px;
+  }
+
+  /* ── UI COMPONENT GRID ───────────────────────── */
+  .comp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 14px; }
+  .comp-card {
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow);
+    transition: 0.2s;
+  }
+  .comp-card:hover { border-color: var(--accent); box-shadow: var(--shadow-lg); }
+  .comp-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .comp-card-icon {
+    width: 38px; height: 38px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;
+  }
+  .comp-card h3 { font-family: var(--font-en); font-size: 15px; font-weight: 700; }
+  .comp-card .comp-bn { font-size: 13px; color: var(--text2); }
+  .comp-row { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+  .comp-row-item { display: flex; gap: 6px; font-size: 13px; line-height: 1.5; }
+  .comp-row-item .ci { font-size: 13px; flex-shrink: 0; margin-top: 2px; }
+
+  @media(max-width:480px) {
+    .hero { padding: 32px 16px 28px; }
+    .info-chip { min-width: 100%; }
+    .hero-stats { gap: 10px; }
+    .hero-stat .num { font-size: 18px; }
+    .comp-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <div class="logo">📘 ProgramDict</div>
+  <div class="search-wrap">
+    <span class="si">🔍</span>
+    <input type="text" id="searchInput" placeholder="যেকোনো term খুঁজুন..." oninput="doSearch(this.value)">
+  </div>
+  <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Dark/Light Toggle">🌙</button>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">Part 1 of 3</div>
+    <h1>Programming & Web Dev<br><span>বাংলা ডিকশনারি</span></h1>
+    <p>Beginners-দের জন্য সহজ বাংলায় সম্পূর্ণ Programming Dictionary ও Course</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">3</div><div class="lbl">Sections</div></div>
+      <div class="hero-stat"><div class="num">68</div><div class="lbl">Terms</div></div>
+      <div class="hero-stat"><div class="num">৩</div><div class="lbl">ভাগে সম্পূর্ণ</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap" id="progressWrap">
+  <div class="progress-top">
+    <span>তোমার অগ্রগতি (Part 1)</span>
+    <strong id="progressText">0 / 68</strong>
+  </div>
+  <div class="progress-bar-outer">
+    <div class="progress-bar-inner" id="progressBar" style="width:0%"></div>
+  </div>
+</div>
+
+<!-- JUMP MENU -->
+<div class="jump-menu">
+  <a class="jump-btn" href="#sec1">🧠 S1: Basics</a>
+  <a class="jump-btn" href="#sec2">💻 S2: Code Terms</a>
+  <a class="jump-btn" href="#sec3">🎨 S3: UI Components</a>
+</div>
+
+<!-- MAIN -->
+<div class="main" id="mainContent">
+
+  <div class="part-badge"><span>PART 1 — Section 1 to 3</span></div>
+
+  <!-- ═══════ SECTION 1 ═══════ -->
+  <div id="sec1">
+    <div class="section-header open" onclick="toggleSection(this)">
+      <div class="section-icon" style="background:linear-gradient(135deg,#4f46e5,#7c3aed)">🧠</div>
+      <div class="section-header-text">
+        <h2>Section 1: Programming Basics</h2>
+        <p>প্রোগ্রামিংয়ের মূল ধারণাগুলো সহজ বাংলায়</p>
+      </div>
+      <span class="section-chevron">▼</span>
+    </div>
+    <div class="section-body open" id="body-sec1">
+
+      <!-- Programming -->
+      <div class="term-card" data-term="programming">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#ede9fe;color:#5b21b6">01</span>
+          <h3>Programming</h3>
+          <span class="bn-title">প্রোগ্রামিং</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">কম্পিউটারকে নির্দেশ দেওয়ার প্রক্রিয়া</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div class="chip-content">
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">কম্পিউটার নিজে থেকে কিছু করতে পারে না। তাকে step-by-step নির্দেশ দিতে হয়। এই নির্দেশ লেখার কাজটাই হলো Programming।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>তুমি রান্না করার Recipe লিখলে — কতটুকু লবণ, কখন নামাবে। এটাই Programming-এর মতো। Recipe = Program, রান্না = Computer-এর কাজ।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-programming" onchange="updateProgress()">
+            <label for="chk-programming">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coding -->
+      <div class="term-card" data-term="coding">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#ede9fe;color:#5b21b6">02</span>
+          <h3>Coding</h3>
+          <span class="bn-title">কোডিং</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Code লেখার কাজ — Programming-এর practical অংশ</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div class="chip-content">
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Programming হলো বড় concept, আর Coding হলো সেই concept অনুযায়ী code লেখা। যেমন — HTML, CSS, JavaScript লেখা = Coding।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>একটা ঘর বানানোর plan করা = Programming। সেই plan অনুযায়ী ইট-সিমেন্ট দিয়ে দেয়াল তোলা = Coding।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-coding" onchange="updateProgress()">
+            <label for="chk-coding">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Software -->
+      <div class="term-card" data-term="software">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#ede9fe;color:#5b21b6">03</span>
+          <h3>Software</h3>
+          <span class="bn-title">সফটওয়্যার</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Code দিয়ে তৈরি প্রোগ্রাম যা computer-এ চলে</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div class="chip-content">
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Hardware হলো computer-এর শরীর (CPU, RAM, Screen), আর Software হলো সেই শরীরে যে প্রাণ থাকে — অর্থাৎ program ও apps।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>Microsoft Word, Google Chrome, WhatsApp — এগুলো সবই Software। তুমি এগুলো দেখতে পাও কিন্তু ধরতে পারো না — শুধু screen-এ ব্যবহার করো।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-software" onchange="updateProgress()">
+            <label for="chk-software">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Application -->
+      <div class="term-card" data-term="application">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#ede9fe;color:#5b21b6">04</span>
+          <h3>Application</h3>
+          <span class="bn-title">অ্যাপ্লিকেশন / অ্যাপ</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">একটি নির্দিষ্ট কাজের জন্য তৈরি Software</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div class="chip-content">
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Software একটি বড় category। Application হলো তার ভেতরে যেটা user-দের কোনো specific কাজে সাহায্য করে। Mobile App, Desktop App, Web App — সব Application।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>Facebook App = Social media application। Bkash App = Banking application। VS Code = Code editor application।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-application" onchange="updateProgress()">
+            <label for="chk-application">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Website -->
+      <div class="term-card" data-term="website">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#ede9fe;color:#5b21b6">05</span>
+          <h3>Website</h3>
+          <span class="bn-title">ওয়েবসাইট</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Internet-এ থাকা একটি address-এ যাওয়া যায় এমন pages-এর সমষ্টি</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div class="chip-content">
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Internet-এ একটি ঠিকানা (URL) দিয়ে যে page খোলে, সেটাই Website। সাধারণত Information দেখানোর জন্য ব্যবহার হয়।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>তোমার স্কুলের website, কোনো newspaper-এর website যেখানে শুধু পড়তে পারো — interact কম। যেমন: prothomalo.com</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-website" onchange="updateProgress()">
+            <label for="chk-website">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Web App -->
+      <div class="term-card" data-term="webapp">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#ede9fe;color:#5b21b6">06</span>
+          <h3>Web App</h3>
+          <span class="bn-title">ওয়েব অ্যাপ</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Browser-এ চলে এমন interactive Application</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div class="chip-content">
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Website শুধু দেখায়, কিন্তু Web App-এ তুমি কাজ করতে পারো — Login করা, Data save করা, Message পাঠানো ইত্যাদি।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>Gmail, Google Docs, Facebook — এগুলো Web App। Browser খুলে ব্যবহার করো, install করা লাগে না।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-webapp" onchange="updateProgress()">
+            <label for="chk-webapp">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Browser -->
+      <div class="term-card" data-term="browser">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#ede9fe;color:#5b21b6">07</span>
+          <h3>Browser</h3>
+          <span class="bn-title">ব্রাউজার</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Internet-এ website/app দেখার software</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div class="chip-content">
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Browser হলো একটা window — যার মাধ্যমে তুমি internet-এর সব website দেখতে পাও। HTML, CSS, JS পড়ে সেটাকে সুন্দর করে screen-এ দেখায়।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>Google Chrome, Mozilla Firefox, Microsoft Edge, Samsung Internet — এগুলো সব Browser।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-browser" onchange="updateProgress()">
+            <label for="chk-browser">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Server -->
+      <div class="term-card" data-term="server">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#ede9fe;color:#5b21b6">08</span>
+          <h3>Server</h3>
+          <span class="bn-title">সার্ভার</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">যে computer সবসময় চালু থেকে অন্যদের data ও service দেয়</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div class="chip-content">
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">তুমি browser-এ facebook.com লিখলে — Facebook-এর Server তোমার কাছে সেই page পাঠিয়ে দেয়। Server = service দেওয়া computer।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>একটা restaurant-এ waiter যেমন খাবার এনে দেয়, Server ঠিক তেমনি data এনে দেয়। তুমি = Client, Restaurant = Server।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-server" onchange="updateProgress()">
+            <label for="chk-server">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Database -->
+      <div class="term-card" data-term="database">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#ede9fe;color:#5b21b6">09</span>
+          <h3>Database</h3>
+          <span class="bn-title">ডেটাবেস</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">সুশৃঙ্খলভাবে data সংরক্ষণ করার system</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div class="chip-content">
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">সব user-দের নাম, password, post — এগুলো কোথাও save থাকতে হয়। সেই জায়গাটার নাম Database। Excel spreadsheet-এর মতো, কিন্তু অনেক বড় ও শক্তিশালী।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>তোমার স্কুলের সব ছাত্রছাত্রীর তথ্য একটা register book-এ থাকে — সেটাই Database-এর real-life উদাহরণ।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-database" onchange="updateProgress()">
+            <label for="chk-database">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- API -->
+      <div class="term-card" data-term="api">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#ede9fe;color:#5b21b6">10</span>
+          <h3>API</h3>
+          <span class="bn-title">এপিআই</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Application Programming Interface — দুটো software-এর মধ্যে যোগাযোগের নিয়ম</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div class="chip-content">
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">API হলো একটা bridge বা দরজা। একটা app অন্য app-এর কাছ থেকে data নিতে API ব্যবহার করে। তুমি সরাসরি ঢুকতে পারবে না, API-র মাধ্যমে চাইতে হবে।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>Pathao app Google Maps দেখায় — কারণ Pathao, Google Maps-এর API ব্যবহার করে। Restaurant = Google Maps, Waiter = API, তুমি = Pathao App।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-api" onchange="updateProgress()">
+            <label for="chk-api">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Framework -->
+      <div class="term-card" data-term="framework">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#ede9fe;color:#5b21b6">11</span>
+          <h3>Framework</h3>
+          <span class="bn-title">ফ্রেমওয়ার্ক</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">একটি pre-built কাঠামো যা দ্রুত app বানাতে সাহায্য করে</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div class="chip-content">
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Framework হলো বাড়ির ready-made ছাঁচ বা mold। তুমি সেই ছাঁচে ঢালাই করো, পুরোটা নিজে বানাতে হয় না। এতে সময় বাঁচে।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>React (JavaScript), Bootstrap (CSS), Django (Python) — এগুলো সব Framework। Bootstrap দিয়ে button বানাতে ১ লাইন, নিজে বানাতে ২০ লাইন লাগতো।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-framework" onchange="updateProgress()">
+            <label for="chk-framework">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Library -->
+      <div class="term-card" data-term="library">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#ede9fe;color:#5b21b6">12</span>
+          <h3>Library</h3>
+          <span class="bn-title">লাইব্রেরি</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Ready-made code-এর সংগ্রহ যা নিজের project-এ ব্যবহার করা যায়</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div class="chip-content">
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Library = বইয়ের লাইব্রেরি। অনেক বই সাজানো আছে, দরকার মতো নিয়ে পড়। Framework-এর চেয়ে ছোট, শুধু specific কাজের জন্য।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>Chart.js = chart বানানোর library। date-fns = date handle করার library। তুমি শুধু call করো, ওরা কাজ করে দেয়।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-library" onchange="updateProgress()">
+            <label for="chk-library">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- SDK -->
+      <div class="term-card" data-term="sdk">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#ede9fe;color:#5b21b6">13</span>
+          <h3>SDK</h3>
+          <span class="bn-title">এসডিকে</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Software Development Kit — একটি platform-এর জন্য সম্পূর্ণ developer toolkit</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div class="chip-content">
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">SDK হলো একটি complete toolbox। যেমন Android SDK-তে Android app বানানোর সব tools, libraries, emulator একসাথে পাবে।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>Android app বানাতে Android SDK লাগে। Facebook app-এ login button দিতে Facebook SDK লাগে।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-sdk" onchange="updateProgress()">
+            <label for="chk-sdk">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- IDE -->
+      <div class="term-card" data-term="ide">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#ede9fe;color:#5b21b6">14</span>
+          <h3>IDE</h3>
+          <span class="bn-title">কোড লেখার সফটওয়্যার</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Integrated Development Environment — code লেখার smart software</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div class="chip-content">
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">IDE হলো coder-এর Microsoft Word। সাধারণ text editor-এর চেয়ে বেশি সুবিধা — auto-complete, error highlight, run করার button, সব একসাথে।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>VS Code (সবচেয়ে popular), Android Studio (Android-এর জন্য), PyCharm (Python-এর জন্য) — সব IDE।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-ide" onchange="updateProgress()">
+            <label for="chk-ide">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Compiler -->
+      <div class="term-card" data-term="compiler">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#ede9fe;color:#5b21b6">15</span>
+          <h3>Compiler</h3>
+          <span class="bn-title">কম্পাইলার</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Human-readable code কে computer-readable machine code-এ রূপান্তর করে</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div class="chip-content">
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">তুমি English-এ code লেখো, computer বোঝে শুধু 0 আর 1। Compiler হলো translator — সে English code কে 0-1 language-এ translate করে।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>C, C++, Java — এগুলো Compiled language। তুমি code লেখো, Compiler পুরো code একবারে translate করে, তারপর run হয়।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-compiler" onchange="updateProgress()">
+            <label for="chk-compiler">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interpreter -->
+      <div class="term-card" data-term="interpreter">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#ede9fe;color:#5b21b6">16</span>
+          <h3>Interpreter</h3>
+          <span class="bn-title">ইন্টারপ্রেটার</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Code line-by-line পড়ে সাথে সাথে execute করে</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div class="chip-content">
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Compiler একসাথে পুরো বই translate করে। Interpreter হলো live translator — একটা বাক্য পড়ো, সাথে সাথে translate করো।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>Python, JavaScript — এগুলো Interpreted language। Browser JavaScript interpret করে চালায়। তাই instantly দেখা যায়।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-interpreter" onchange="updateProgress()">
+            <label for="chk-interpreter">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Algorithm -->
+      <div class="term-card" data-term="algorithm">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#ede9fe;color:#5b21b6">17</span>
+          <h3>Algorithm</h3>
+          <span class="bn-title">অ্যালগরিদম</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">কোনো সমস্যা সমাধানের step-by-step পরিকল্পনা</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div class="chip-content">
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">রান্নার recipe, ঘর থেকে school যাওয়ার রাস্তা — সবকিছুই Algorithm। একটা লক্ষ্য অর্জনের জন্য নির্দিষ্ট ধাপে ধাপে এগোনো।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>Google Search Algorithm: তুমি কী লিখলে → সব website দেখলো → ranking করলো → সেরাটা দেখালো। এই পুরো process = Algorithm।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-algorithm" onchange="updateProgress()">
+            <label for="chk-algorithm">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Logic -->
+      <div class="term-card" data-term="logic">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#ede9fe;color:#5b21b6">18</span>
+          <h3>Logic</h3>
+          <span class="bn-title">লজিক / যুক্তি</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">সঠিক সিদ্ধান্ত নেওয়ার চিন্তার ধরন</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div class="chip-content">
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Coding-এ logic মানে: "এই condition সত্য হলে এটা করো, নাহলে ওটা করো।" এটাই programming-এর brain।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>ATM logic: Card correct? → PIN correct? → Balance আছে? → টাকা দাও। প্রতিটি "?" = একটি logical decision।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-logic" onchange="updateProgress()">
+            <label for="chk-logic">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Syntax -->
+      <div class="term-card" data-term="syntax">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#ede9fe;color:#5b21b6">19</span>
+          <h3>Syntax</h3>
+          <span class="bn-title">সিনট্যাক্স</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Programming language-এর grammar বা লেখার নিয়ম</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div class="chip-content">
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">বাংলায় "আমি ভাত খাই" — এটা সঠিক syntax। "খাই ভাত আমি" লিখলে অর্থ হয় না। তেমনি code-এরও নিজের grammar আছে — সেটাই Syntax।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>JavaScript-এ function লিখতে হয়: <code style="background:#1e1b4b;color:#a5b4fc;padding:2px 6px;border-radius:4px">function myFunc() {"{}"}</code> — এই নির্দিষ্ট নিয়মটাই Syntax।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-syntax" onchange="updateProgress()">
+            <label for="chk-syntax">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bug -->
+      <div class="term-card" data-term="bug">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#ede9fe;color:#5b21b6">20</span>
+          <h3>Bug</h3>
+          <span class="bn-title">বাগ / ত্রুটি</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Code-এ এমন ভুল যার কারণে program ঠিকভাবে কাজ করে না</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div class="chip-content">
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">পুরোনো দিনে computer-এ সত্যিকারের পোকা (bug) ঢুকে machine বন্ধ হয়ে গিয়েছিল। তখন থেকে code-এর ভুলকে Bug বলা হয়।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>বকশী বাজারে ATM থেকে টাকা গেছে কিন্তু account-এ কাটেনি — এটা banking software-এর Bug!</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-bug" onchange="updateProgress()">
+            <label for="chk-bug">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Debugging -->
+      <div class="term-card" data-term="debugging">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#ede9fe;color:#5b21b6">21</span>
+          <h3>Debugging</h3>
+          <span class="bn-title">ডিবাগিং</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">বাংলা অর্থ</div>
+                <div class="chip-text">Code-এর Bug খুঁজে বের করে ঠিক করার প্রক্রিয়া</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">💡</span>
+              <div class="chip-content">
+                <div class="chip-label">সহজ ব্যাখ্যা</div>
+                <div class="chip-text">Programmer-দের কাজের ৫০% হলো Debugging। Code লেখার চেয়ে ভুল খুঁজে ঠিক করাতেই বেশি সময় যায়!</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">🌍 বাস্তব উদাহরণ</div>
+            <p>গাড়ি start নিচ্ছে না → mechanic খুঁজছে সমস্যা কোথায় → battery? fuel? engine? → খুঁজে ঠিক করলো = Debugging।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-debugging" onchange="updateProgress()">
+            <label for="chk-debugging">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /body-sec1 -->
+  </div><!-- /sec1 -->
+
+  <!-- ═══════ SECTION 2 ═══════ -->
+  <div id="sec2">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon" style="background:linear-gradient(135deg,#059669,#0d9488)">💻</div>
+      <div class="section-header-text">
+        <h2>Section 2: Common Coding Terms</h2>
+        <p>প্রোগ্রামিং-এ বারবার আসে এমন গুরুত্বপূর্ণ terms</p>
+      </div>
+      <span class="section-chevron">▼</span>
+    </div>
+    <div class="section-body" id="body-sec2">
+
+      <!-- Variable -->
+      <div class="term-card" data-term="variable">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#d1fae5;color:#065f46">01</span>
+          <h3>Variable</h3>
+          <span class="bn-title">ভেরিয়েবল / চলক</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">অর্থ</div>
+                <div class="chip-text">Data সাময়িকভাবে রাখার জন্য নামযুক্ত container</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">⚙️</span>
+              <div class="chip-content">
+                <div class="chip-label">কাজ</div>
+                <div class="chip-text">যেকোনো value (সংখ্যা, text, তালিকা) store করে রাখা এবং পরে ব্যবহার করা।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">💡 সহজ উদাহরণ</div>
+            <p><code style="color:#86efac">let name = "Aminul";</code> — এখানে <strong style="color:#a5b4fc">name</strong> হলো Variable, <strong style="color:#fbbf24">"Aminul"</strong> হলো তার value। যেমন একটা বাক্স যার গায়ে "নাম" লেখা।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-variable" onchange="updateProgress()">
+            <label for="chk-variable">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Constant -->
+      <div class="term-card" data-term="constant">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#d1fae5;color:#065f46">02</span>
+          <h3>Constant</h3>
+          <span class="bn-title">কনস্ট্যান্ট / স্থিরাঙ্ক</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">অর্থ</div>
+                <div class="chip-text">যে value একবার set করলে আর পরিবর্তন হয় না</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">⚙️</span>
+              <div class="chip-content">
+                <div class="chip-label">কাজ</div>
+                <div class="chip-text">Fixed value ধরে রাখা। যেমন PI = 3.14159 — এটা কখনো বদলাবে না।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">💡 সহজ উদাহরণ</div>
+            <p><code style="color:#86efac">const MAX_USERS = 100;</code> — এই 100 কখনো বদলাবে না। Variable-এর মতো, কিন্তু lock করা।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-constant" onchange="updateProgress()">
+            <label for="chk-constant">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Function -->
+      <div class="term-card" data-term="function">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#d1fae5;color:#065f46">03</span>
+          <h3>Function</h3>
+          <span class="bn-title">ফাংশন</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">অর্থ</div>
+                <div class="chip-text">একটি নির্দিষ্ট কাজের জন্য তৈরি reusable code-এর block</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">⚙️</span>
+              <div class="chip-content">
+                <div class="chip-label">কাজ</div>
+                <div class="chip-text">একই code বারবার না লিখে, একবার function বানিয়ে রাখো — যতবার দরকার call করো।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">💡 সহজ উদাহরণ</div>
+            <p>মিক্সার মেশিন = Function। যা দাও তা blend করে দেয়। তুমি প্রতিদিন মেশিন নতুন বানাও না — একবার কিনে বারবার ব্যবহার করো।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-function" onchange="updateProgress()">
+            <label for="chk-function">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Parameter / Argument -->
+      <div class="term-card" data-term="parameter argument">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#d1fae5;color:#065f46">04</span>
+          <h3>Parameter & Argument</h3>
+          <span class="bn-title">প্যারামিটার ও আর্গুমেন্ট</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">অর্থ</div>
+                <div class="chip-text">Parameter = function-এর নির্ধারিত input slot। Argument = সেই slot-এ দেওয়া actual value।</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">⚙️</span>
+              <div class="chip-content">
+                <div class="chip-label">কাজ</div>
+                <div class="chip-text">Function-কে বিভিন্ন data দিয়ে আলাদা কাজ করানো যায়।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">💡 সহজ উদাহরণ</div>
+            <p>মিক্সার-এ যে জায়গায় ফল দাও সেটা = Parameter। আজকে আম দিলে, কালকে কলা দিলে সেটা = Argument।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-param" onchange="updateProgress()">
+            <label for="chk-param">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Array -->
+      <div class="term-card" data-term="array">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#d1fae5;color:#065f46">05</span>
+          <h3>Array</h3>
+          <span class="bn-title">অ্যারে / তালিকা</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">অর্থ</div>
+                <div class="chip-text">একসাথে অনেক value রাখার ordered তালিকা</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">⚙️</span>
+              <div class="chip-content">
+                <div class="chip-label">কাজ</div>
+                <div class="chip-text">একই ধরনের অনেক data একটি variable-এ রাখা।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">💡 সহজ উদাহরণ</div>
+            <p><code style="color:#86efac">let fruits = ["আম", "কলা", "লিচু"];</code> — Shopping list = Array। প্রতিটি item একটি slot-এ থাকে।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-array" onchange="updateProgress()">
+            <label for="chk-array">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Object -->
+      <div class="term-card" data-term="object">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#d1fae5;color:#065f46">06</span>
+          <h3>Object</h3>
+          <span class="bn-title">অবজেক্ট</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">অর্থ</div>
+                <div class="chip-text">Key-Value pair আকারে সংগঠিত data collection</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">⚙️</span>
+              <div class="chip-content">
+                <div class="chip-label">কাজ</div>
+                <div class="chip-text">Real-world জিনিসের properties code-এ represent করা।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">💡 সহজ উদাহরণ</div>
+            <p>একজন মানুষ Object হলে: <code style="color:#86efac">{"{"} name: "Aminul", age: 25, city: "Dhaka" {"}"}</code> — ID card-এর মতো, একটা জিনিসের সব তথ্য এক জায়গায়।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-object" onchange="updateProgress()">
+            <label for="chk-object">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Class -->
+      <div class="term-card" data-term="class">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#d1fae5;color:#065f46">07</span>
+          <h3>Class</h3>
+          <span class="bn-title">ক্লাস / নকশা</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">অর্থ</div>
+                <div class="chip-text">Object বানানোর blueprint বা ছাঁচ</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">⚙️</span>
+              <div class="chip-content">
+                <div class="chip-label">কাজ</div>
+                <div class="chip-text">একটা template বানিয়ে রাখো, সেই template থেকে অনেক Object তৈরি করো।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">💡 সহজ উদাহরণ</div>
+            <p>Car-এর design = Class। সেই design থেকে লাল গাড়ি, নীল গাড়ি, বড় গাড়ি বানানো = Object। Factory = Class, প্রতিটি গাড়ি = Object।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-class" onchange="updateProgress()">
+            <label for="chk-class">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Method -->
+      <div class="term-card" data-term="method">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#d1fae5;color:#065f46">08</span>
+          <h3>Method</h3>
+          <span class="bn-title">মেথড</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">অর্থ</div>
+                <div class="chip-text">Object বা Class-এর ভেতরে থাকা Function</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">⚙️</span>
+              <div class="chip-content">
+                <div class="chip-label">কাজ</div>
+                <div class="chip-text">Object-এর নিজস্ব action বা behavior define করে।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">💡 সহজ উদাহরণ</div>
+            <p>গাড়ি Object-এর method হলো: .চালু_করো(), .থামো(), .হর্ন_দাও()। গাড়ির নিজের কাজ = Method।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-method" onchange="updateProgress()">
+            <label for="chk-method">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loop -->
+      <div class="term-card" data-term="loop">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#d1fae5;color:#065f46">09</span>
+          <h3>Loop</h3>
+          <span class="bn-title">লুপ / পুনরাবৃত্তি</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">অর্থ</div>
+                <div class="chip-text">একটি কাজ বারবার automatically করানোর technique</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">⚙️</span>
+              <div class="chip-content">
+                <div class="chip-label">কাজ</div>
+                <div class="chip-text">100 জনকে "Happy Birthday" message পাঠাতে 100 বার লিখতে হবে না — Loop একবার লিখলে বারবার করে।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">💡 সহজ উদাহরণ</div>
+            <p>ফ্যান ঘোরে বারবার = Loop। কারখানায় machine একই কাজ হাজারবার করে = Loop। শর্ত শেষ না হওয়া পর্যন্ত চলতে থাকে।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-loop" onchange="updateProgress()">
+            <label for="chk-loop">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Condition -->
+      <div class="term-card" data-term="condition">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#d1fae5;color:#065f46">10</span>
+          <h3>Condition</h3>
+          <span class="bn-title">কন্ডিশন / শর্ত</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">অর্থ</div>
+                <div class="chip-text">সত্য বা মিথ্যার উপর ভিত্তি করে সিদ্ধান্ত নেওয়া</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">⚙️</span>
+              <div class="chip-content">
+                <div class="chip-label">কাজ</div>
+                <div class="chip-text">if-else দিয়ে: "এই condition সত্য হলে A করো, নইলে B করো।"</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">💡 সহজ উদাহরণ</div>
+            <p>Traffic light: লাল হলে থামো, সবুজ হলে যাও। if (light === "red") stop(); else go(); — এটাই Condition।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-condition" onchange="updateProgress()">
+            <label for="chk-condition">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Event -->
+      <div class="term-card" data-term="event">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#d1fae5;color:#065f46">11</span>
+          <h3>Event</h3>
+          <span class="bn-title">ইভেন্ট / ঘটনা</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">অর্থ</div>
+                <div class="chip-text">User বা system-এর কোনো action যা code trigger করে</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">⚙️</span>
+              <div class="chip-content">
+                <div class="chip-label">কাজ</div>
+                <div class="chip-text">Click, Scroll, Keyboard press, Form submit — সব Event। Event হলে specific code চলে।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">💡 সহজ উদাহরণ</div>
+            <p>দরজার bell টিপলে ভেতরে sound হয়। Bell টেপা = Event, Sound = Response। Button click করলে popup আসা = Event handling।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-event" onchange="updateProgress()">
+            <label for="chk-event">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Callback -->
+      <div class="term-card" data-term="callback">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#d1fae5;color:#065f46">12</span>
+          <h3>Callback</h3>
+          <span class="bn-title">কলব্যাক</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">অর্থ</div>
+                <div class="chip-text">একটি function যা অন্য function-এ pass করা হয় পরে চালানোর জন্য</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">⚙️</span>
+              <div class="chip-content">
+                <div class="chip-label">কাজ</div>
+                <div class="chip-text">কোনো কাজ শেষ হলে automatically পরবর্তী কাজ শুরু করে।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">💡 সহজ উদাহরণ</div>
+            <p>মাকে বললে: "রান্না শেষ হলে আমাকে ডাকো।" সেই ডাক দেওয়াটা = Callback। কাজ শেষের পর automatically জানানো।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-callback" onchange="updateProgress()">
+            <label for="chk-callback">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Promise -->
+      <div class="term-card" data-term="promise">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#d1fae5;color:#065f46">13</span>
+          <h3>Promise</h3>
+          <span class="bn-title">প্রমিস / প্রতিশ্রুতি</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">অর্থ</div>
+                <div class="chip-text">ভবিষ্যতে কোনো async কাজের result পাওয়ার প্রতিশ্রুতি</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">⚙️</span>
+              <div class="chip-content">
+                <div class="chip-label">কাজ</div>
+                <div class="chip-text">৩টি state আছে: Pending (অপেক্ষায়), Fulfilled (সফল), Rejected (ব্যর্থ)।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">💡 সহজ উদাহরণ</div>
+            <p>Online order = Promise। Order দিলে = Pending। Delivery এলো = Fulfilled। Out of stock = Rejected।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-promise" onchange="updateProgress()">
+            <label for="chk-promise">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Async -->
+      <div class="term-card" data-term="async">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#d1fae5;color:#065f46">14</span>
+          <h3>Async / Await</h3>
+          <span class="bn-title">অ্যাসিঙ্ক্রোনাস</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">অর্থ</div>
+                <div class="chip-text">একটি কাজ চলাকালীন অন্য কাজ করার পদ্ধতি — না থেমে</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">⚙️</span>
+              <div class="chip-content">
+                <div class="chip-label">কাজ</div>
+                <div class="chip-text">Server থেকে data আসার জন্য অপেক্ষা করতে গিয়ে পুরো page freeze না হওয়া।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">💡 সহজ উদাহরণ</div>
+            <p>চা বানাতে দিলে, সেই ফাঁকে ফোন চেক করো — চা হলে পান করো। চায়ের জন্য বসে না থাকাটাই Async।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-async" onchange="updateProgress()">
+            <label for="chk-async">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- JSON -->
+      <div class="term-card" data-term="json">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#d1fae5;color:#065f46">15</span>
+          <h3>JSON</h3>
+          <span class="bn-title">জেসন / ডেটা ফরম্যাট</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">অর্থ</div>
+                <div class="chip-text">JavaScript Object Notation — data আদান-প্রদানের standard format</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">⚙️</span>
+              <div class="chip-content">
+                <div class="chip-label">কাজ</div>
+                <div class="chip-text">Server ও Client-এর মধ্যে data পাঠানো-নেওয়ার জন্য universally ব্যবহৃত format।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">💡 সহজ উদাহরণ</div>
+            <p>চিঠির envelope-এ নির্দিষ্ট নিয়মে ঠিকানা লিখতে হয় — সেটাই JSON-এর মতো। সব জায়গায় একই format, তাই সবাই বুঝতে পারে।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-json" onchange="updateProgress()">
+            <label for="chk-json">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- DOM -->
+      <div class="term-card" data-term="dom">
+        <div class="term-card-header" onclick="toggleTerm(this.parentElement)">
+          <span class="term-badge" style="background:#d1fae5;color:#065f46">16</span>
+          <h3>DOM</h3>
+          <span class="bn-title">ডম</span>
+          <span class="term-chevron">▼</span>
+        </div>
+        <div class="term-body">
+          <div class="info-row">
+            <div class="info-chip">
+              <span class="chip-icon">📖</span>
+              <div class="chip-content">
+                <div class="chip-label">অর্থ</div>
+                <div class="chip-text">Document Object Model — webpage-এর সব element-এর tree structure</div>
+              </div>
+            </div>
+            <div class="info-chip">
+              <span class="chip-icon">⚙️</span>
+              <div class="chip-content">
+                <div class="chip-label">কাজ</div>
+                <div class="chip-text">JavaScript DOM-এর মাধ্যমে webpage-এর যেকোনো element change, add, delete করতে পারে।</div>
+              </div>
+            </div>
+          </div>
+          <div class="example-box">
+            <div class="ex-label">💡 সহজ উদাহরণ</div>
+            <p>পরিবারের গাছ chart কল্পনা করো: দাদু (html) → বাবা (body) → তুমি (div) → তোমার ভাই (p)। এই পুরো পারিবারিক tree = DOM।</p>
+          </div>
+          <div class="read-check">
+            <input type="checkbox" id="chk-dom" onchange="updateProgress()">
+            <label for="chk-dom">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /body-sec2 -->
+  </div><!-- /sec2 -->
+
+  <!-- ═══════ SECTION 3 ═══════ -->
+  <div id="sec3">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon" style="background:linear-gradient(135deg,#db2777,#9333ea)">🎨</div>
+      <div class="section-header-text">
+        <h2>Section 3: UI Components Dictionary</h2>
+        <p>Web ও App-এর সব ধরনের visual elements</p>
+      </div>
+      <span class="section-chevron">▼</span>
+    </div>
+    <div class="section-body" id="body-sec3">
+      <div class="comp-grid" id="compGrid">
+
+        <!-- Button -->
+        <div class="comp-card" data-term="button">
+          <div class="comp-card-head">
+            <div class="comp-card-icon" style="background:#fce7f3">🖱️</div>
+            <div><h3>Button</h3><div class="comp-bn">বাটন / বোতাম</div></div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-row-item"><span class="ci">📌</span><span><strong>কাজ:</strong> Click করে action trigger করে</span></div>
+            <div class="comp-row-item"><span class="ci">📍</span><span><strong>ব্যবহার:</strong> Form submit, Delete, Share, Login</span></div>
+            <div class="comp-row-item"><span class="ci">✨</span><span>সবচেয়ে বেশি ব্যবহৃত UI element</span></div>
+          </div>
+          <div class="read-check" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <input type="checkbox" id="chk-button" onchange="updateProgress()">
+            <label for="chk-button">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+
+        <!-- Dropdown -->
+        <div class="comp-card" data-term="dropdown">
+          <div class="comp-card-head">
+            <div class="comp-card-icon" style="background:#ede9fe">📋</div>
+            <div><h3>Dropdown</h3><div class="comp-bn">ড্রপডাউন মেনু</div></div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-row-item"><span class="ci">📌</span><span><strong>কাজ:</strong> Click করলে নিচে option list দেখায়</span></div>
+            <div class="comp-row-item"><span class="ci">📍</span><span><strong>ব্যবহার:</strong> Country select, Category filter, Profile menu</span></div>
+            <div class="comp-row-item"><span class="ci">✨</span><span>জায়গা বাঁচায়, অনেক option organize করে</span></div>
+          </div>
+          <div class="read-check" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <input type="checkbox" id="chk-dropdown" onchange="updateProgress()">
+            <label for="chk-dropdown">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+
+        <!-- Navbar -->
+        <div class="comp-card" data-term="navbar navigation">
+          <div class="comp-card-head">
+            <div class="comp-card-icon" style="background:#d1fae5">🧭</div>
+            <div><h3>Navbar</h3><div class="comp-bn">নেভিগেশন বার</div></div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-row-item"><span class="ci">📌</span><span><strong>কাজ:</strong> Page-এর বিভিন্ন অংশে navigate করতে দেয়</span></div>
+            <div class="comp-row-item"><span class="ci">📍</span><span><strong>ব্যবহার:</strong> Website-এর top-এ Home, About, Contact লিংক</span></div>
+            <div class="comp-row-item"><span class="ci">✨</span><span>এই page-এর উপরের menu = Navbar</span></div>
+          </div>
+          <div class="read-check" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <input type="checkbox" id="chk-navbar" onchange="updateProgress()">
+            <label for="chk-navbar">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="comp-card" data-term="sidebar">
+          <div class="comp-card-head">
+            <div class="comp-card-icon" style="background:#fef3c7">📁</div>
+            <div><h3>Sidebar</h3><div class="comp-bn">সাইডবার</div></div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-row-item"><span class="ci">📌</span><span><strong>কাজ:</strong> Page-এর বাম বা ডান দিকে extra navigation</span></div>
+            <div class="comp-row-item"><span class="ci">📍</span><span><strong>ব্যবহার:</strong> Dashboard, Gmail, VS Code-এর বাম panel</span></div>
+            <div class="comp-row-item"><span class="ci">✨</span><span>Mobile-এ সাধারণত লুকানো থাকে, ☰ menu দিয়ে খোলে</span></div>
+          </div>
+          <div class="read-check" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <input type="checkbox" id="chk-sidebar" onchange="updateProgress()">
+            <label for="chk-sidebar">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+
+        <!-- Header -->
+        <div class="comp-card" data-term="header">
+          <div class="comp-card-head">
+            <div class="comp-card-icon" style="background:#dbeafe">⬆️</div>
+            <div><h3>Header</h3><div class="comp-bn">হেডার / শীর্ষ অংশ</div></div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-row-item"><span class="ci">📌</span><span><strong>কাজ:</strong> Page-এর সবচেয়ে উপরের section</span></div>
+            <div class="comp-row-item"><span class="ci">📍</span><span><strong>ব্যবহার:</strong> Logo, Navbar, Search bar থাকে এখানে</span></div>
+            <div class="comp-row-item"><span class="ci">✨</span><span>Newspaper-এর উপরের শিরোনাম অংশ = Header</span></div>
+          </div>
+          <div class="read-check" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <input type="checkbox" id="chk-header" onchange="updateProgress()">
+            <label for="chk-header">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="comp-card" data-term="footer">
+          <div class="comp-card-head">
+            <div class="comp-card-icon" style="background:#f3f4f6">⬇️</div>
+            <div><h3>Footer</h3><div class="comp-bn">ফুটার / নিচের অংশ</div></div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-row-item"><span class="ci">📌</span><span><strong>কাজ:</strong> Page-এর সবচেয়ে নিচের section</span></div>
+            <div class="comp-row-item"><span class="ci">📍</span><span><strong>ব্যবহার:</strong> Copyright, Contact, Privacy Policy লিংক</span></div>
+            <div class="comp-row-item"><span class="ci">✨</span><span>বইয়ের শেষ পাতার মতো — সাধারণ তথ্য থাকে</span></div>
+          </div>
+          <div class="read-check" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <input type="checkbox" id="chk-footer" onchange="updateProgress()">
+            <label for="chk-footer">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+
+        <!-- Hero Section -->
+        <div class="comp-card" data-term="hero section banner">
+          <div class="comp-card-head">
+            <div class="comp-card-icon" style="background:#e0e7ff">🦸</div>
+            <div><h3>Hero Section</h3><div class="comp-bn">হিরো সেকশন</div></div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-row-item"><span class="ci">📌</span><span><strong>কাজ:</strong> Website-এর প্রধান intro/banner অংশ</span></div>
+            <div class="comp-row-item"><span class="ci">📍</span><span><strong>ব্যবহার:</strong> Landing page-এর প্রথম বড় section</span></div>
+            <div class="comp-row-item"><span class="ci">✨</span><span>এই page-এর উপরের বড় purple section = Hero Section</span></div>
+          </div>
+          <div class="read-check" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <input type="checkbox" id="chk-hero" onchange="updateProgress()">
+            <label for="chk-hero">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+
+        <!-- Card -->
+        <div class="comp-card" data-term="card">
+          <div class="comp-card-head">
+            <div class="comp-card-icon" style="background:#fce7f3">🃏</div>
+            <div><h3>Card</h3><div class="comp-bn">কার্ড</div></div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-row-item"><span class="ci">📌</span><span><strong>কাজ:</strong> তথ্য সুন্দরভাবে box-এ সাজিয়ে দেখানো</span></div>
+            <div class="comp-row-item"><span class="ci">📍</span><span><strong>ব্যবহার:</strong> Product list, Blog post, Profile preview</span></div>
+            <div class="comp-row-item"><span class="ci">✨</span><span>তোমার এই page-এর প্রতিটি term-box = Card</span></div>
+          </div>
+          <div class="read-check" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <input type="checkbox" id="chk-card" onchange="updateProgress()">
+            <label for="chk-card">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="comp-card" data-term="modal dialog popup">
+          <div class="comp-card-head">
+            <div class="comp-card-icon" style="background:#ede9fe">🪟</div>
+            <div><h3>Modal</h3><div class="comp-bn">মোডাল / পপআপ উইন্ডো</div></div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-row-item"><span class="ci">📌</span><span><strong>কাজ:</strong> Background blur করে সামনে ভেসে ওঠা window</span></div>
+            <div class="comp-row-item"><span class="ci">📍</span><span><strong>ব্যবহার:</strong> "Delete করবেন?" confirmation, Image preview</span></div>
+            <div class="comp-row-item"><span class="ci">✨</span><span>×  close না করলে অন্য কিছু করা যায় না</span></div>
+          </div>
+          <div class="read-check" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <input type="checkbox" id="chk-modal" onchange="updateProgress()">
+            <label for="chk-modal">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+
+        <!-- Popup -->
+        <div class="comp-card" data-term="popup">
+          <div class="comp-card-head">
+            <div class="comp-card-icon" style="background:#fef3c7">💬</div>
+            <div><h3>Popup</h3><div class="comp-bn">পপআপ</div></div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-row-item"><span class="ci">📌</span><span><strong>কাজ:</strong> হঠাৎ ভেসে ওঠা ছোট message বা window</span></div>
+            <div class="comp-row-item"><span class="ci">📍</span><span><strong>ব্যবহার:</strong> Newsletter subscribe, Cookie consent, Promo</span></div>
+            <div class="comp-row-item"><span class="ci">✨</span><span>Modal-এর চেয়ে ছোট, page block করে না সবসময়</span></div>
+          </div>
+          <div class="read-check" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <input type="checkbox" id="chk-popup" onchange="updateProgress()">
+            <label for="chk-popup">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+
+        <!-- Accordion -->
+        <div class="comp-card" data-term="accordion collapsible">
+          <div class="comp-card-head">
+            <div class="comp-card-icon" style="background:#d1fae5">🪗</div>
+            <div><h3>Accordion</h3><div class="comp-bn">একর্ডিয়ন</div></div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-row-item"><span class="ci">📌</span><span><strong>কাজ:</strong> Click করলে content খোলে/বন্ধ হয়</span></div>
+            <div class="comp-row-item"><span class="ci">📍</span><span><strong>ব্যবহার:</strong> FAQ, Course section, Settings</span></div>
+            <div class="comp-row-item"><span class="ci">✨</span><span>এই page-এর প্রতিটি term card = Accordion!</span></div>
+          </div>
+          <div class="read-check" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <input type="checkbox" id="chk-accordion" onchange="updateProgress()">
+            <label for="chk-accordion">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+
+        <!-- Tab -->
+        <div class="comp-card" data-term="tab">
+          <div class="comp-card-head">
+            <div class="comp-card-icon" style="background:#dbeafe">🗂️</div>
+            <div><h3>Tab</h3><div class="comp-bn">ট্যাব</div></div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-row-item"><span class="ci">📌</span><span><strong>কাজ:</strong> একই জায়গায় আলাদা content switch করে দেখায়</span></div>
+            <div class="comp-row-item"><span class="ci">📍</span><span><strong>ব্যবহার:</strong> Browser tab, Profile (Posts/Photos/About)</span></div>
+            <div class="comp-row-item"><span class="ci">✨</span><span>ফাইল folder-এর ট্যাবের মতো</span></div>
+          </div>
+          <div class="read-check" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <input type="checkbox" id="chk-tab" onchange="updateProgress()">
+            <label for="chk-tab">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+
+        <!-- Carousel -->
+        <div class="comp-card" data-term="carousel slider">
+          <div class="comp-card-head">
+            <div class="comp-card-icon" style="background:#fce7f3">🎠</div>
+            <div><h3>Carousel</h3><div class="comp-bn">ক্যারোসেল / স্লাইডার</div></div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-row-item"><span class="ci">📌</span><span><strong>কাজ:</strong> Image বা content auto-slide করে দেখায়</span></div>
+            <div class="comp-row-item"><span class="ci">📍</span><span><strong>ব্যবহার:</strong> E-commerce banner, News headlines</span></div>
+            <div class="comp-row-item"><span class="ci">✨</span><span>Daraz-এর হোম page-এর উপরের ছবি sliding = Carousel</span></div>
+          </div>
+          <div class="read-check" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <input type="checkbox" id="chk-carousel" onchange="updateProgress()">
+            <label for="chk-carousel">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <div class="comp-card" data-term="form">
+          <div class="comp-card-head">
+            <div class="comp-card-icon" style="background:#e0f2fe">📝</div>
+            <div><h3>Form</h3><div class="comp-bn">ফর্ম</div></div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-row-item"><span class="ci">📌</span><span><strong>কাজ:</strong> User-এর কাছ থেকে data collect করে</span></div>
+            <div class="comp-row-item"><span class="ci">📍</span><span><strong>ব্যবহার:</strong> Login, Registration, Contact, Order</span></div>
+            <div class="comp-row-item"><span class="ci">✨</span><span>কাগজের ফর্ম পূরণের digital version</span></div>
+          </div>
+          <div class="read-check" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <input type="checkbox" id="chk-form" onchange="updateProgress()">
+            <label for="chk-form">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+
+        <!-- Input Field -->
+        <div class="comp-card" data-term="input field text box">
+          <div class="comp-card-head">
+            <div class="comp-card-icon" style="background:#fef9c3">⌨️</div>
+            <div><h3>Input Field</h3><div class="comp-bn">ইনপুট বক্স</div></div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-row-item"><span class="ci">📌</span><span><strong>কাজ:</strong> User type করে text বা number দিতে পারে</span></div>
+            <div class="comp-row-item"><span class="ci">📍</span><span><strong>ব্যবহার:</strong> Search box, Username, Password</span></div>
+            <div class="comp-row-item"><span class="ci">✨</span><span>এই page-এর উপরের search bar = Input Field</span></div>
+          </div>
+          <div class="read-check" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <input type="checkbox" id="chk-input" onchange="updateProgress()">
+            <label for="chk-input">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+
+        <!-- Checkbox -->
+        <div class="comp-card" data-term="checkbox">
+          <div class="comp-card-head">
+            <div class="comp-card-icon" style="background:#d1fae5">☑️</div>
+            <div><h3>Checkbox</h3><div class="comp-bn">চেকবক্স</div></div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-row-item"><span class="ci">📌</span><span><strong>কাজ:</strong> হ্যাঁ/না বা multiple option select করা</span></div>
+            <div class="comp-row-item"><span class="ci">📍</span><span><strong>ব্যবহার:</strong> "Terms agree", To-do list tick, Filter</span></div>
+            <div class="comp-row-item"><span class="ci">✨</span><span>এই page-এ "পড়া হয়েছে" ✅ = Checkbox</span></div>
+          </div>
+          <div class="read-check" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <input type="checkbox" id="chk-checkbox" onchange="updateProgress()">
+            <label for="chk-checkbox">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+
+        <!-- Radio Button -->
+        <div class="comp-card" data-term="radio button">
+          <div class="comp-card-head">
+            <div class="comp-card-icon" style="background:#ede9fe">🔘</div>
+            <div><h3>Radio Button</h3><div class="comp-bn">রেডিও বাটন</div></div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-row-item"><span class="ci">📌</span><span><strong>কাজ:</strong> একাধিক option থেকে শুধু একটি select করা</span></div>
+            <div class="comp-row-item"><span class="ci">📍</span><span><strong>ব্যবহার:</strong> Gender select, Payment method, MCQ quiz</span></div>
+            <div class="comp-row-item"><span class="ci">✨</span><span>Checkbox = একাধিক select। Radio = শুধু একটি।</span></div>
+          </div>
+          <div class="read-check" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <input type="checkbox" id="chk-radio" onchange="updateProgress()">
+            <label for="chk-radio">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+
+        <!-- Toggle Switch -->
+        <div class="comp-card" data-term="toggle switch dark mode">
+          <div class="comp-card-head">
+            <div class="comp-card-icon" style="background:#fce7f3">🔄</div>
+            <div><h3>Toggle Switch</h3><div class="comp-bn">টগল সুইচ</div></div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-row-item"><span class="ci">📌</span><span><strong>কাজ:</strong> On/Off switch — দুটি state-এর মধ্যে সুইচ</span></div>
+            <div class="comp-row-item"><span class="ci">📍</span><span><strong>ব্যবহার:</strong> Dark mode, Notifications on/off, WiFi</span></div>
+            <div class="comp-row-item"><span class="ci">✨</span><span>এই page-এর 🌙 Dark mode button = Toggle Switch</span></div>
+          </div>
+          <div class="read-check" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <input type="checkbox" id="chk-toggle" onchange="updateProgress()">
+            <label for="chk-toggle">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+
+        <!-- Search Box -->
+        <div class="comp-card" data-term="search box">
+          <div class="comp-card-head">
+            <div class="comp-card-icon" style="background:#e0f2fe">🔍</div>
+            <div><h3>Search Box</h3><div class="comp-bn">সার্চ বক্স</div></div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-row-item"><span class="ci">📌</span><span><strong>কাজ:</strong> Text type করে কিছু খোঁজার input field</span></div>
+            <div class="comp-row-item"><span class="ci">📍</span><span><strong>ব্যবহার:</strong> Google search, Product search, User search</span></div>
+            <div class="comp-row-item"><span class="ci">✨</span><span>এই page-এর top search bar = Search Box</span></div>
+          </div>
+          <div class="read-check" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <input type="checkbox" id="chk-searchbox" onchange="updateProgress()">
+            <label for="chk-searchbox">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="comp-card" data-term="pagination page">
+          <div class="comp-card-head">
+            <div class="comp-card-icon" style="background:#fef3c7">📄</div>
+            <div><h3>Pagination</h3><div class="comp-bn">পেজিনেশন</div></div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-row-item"><span class="ci">📌</span><span><strong>কাজ:</strong> অনেক content-কে page-এ ভাগ করে দেখায়</span></div>
+            <div class="comp-row-item"><span class="ci">📍</span><span><strong>ব্যবহার:</strong> Google search result, Product list</span></div>
+            <div class="comp-row-item"><span class="ci">✨</span><span>Google-এর নিচের 1 2 3 4 5 ... = Pagination</span></div>
+          </div>
+          <div class="read-check" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <input type="checkbox" id="chk-pagination" onchange="updateProgress()">
+            <label for="chk-pagination">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+
+        <!-- Breadcrumb -->
+        <div class="comp-card" data-term="breadcrumb navigation path">
+          <div class="comp-card-head">
+            <div class="comp-card-icon" style="background:#d1fae5">🍞</div>
+            <div><h3>Breadcrumb</h3><div class="comp-bn">ব্রেডক্রাম্ব</div></div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-row-item"><span class="ci">📌</span><span><strong>কাজ:</strong> User এখন কোথায় আছে সেটা path দিয়ে দেখায়</span></div>
+            <div class="comp-row-item"><span class="ci">📍</span><span><strong>ব্যবহার:</strong> E-commerce, Documentation site</span></div>
+            <div class="comp-row-item"><span class="ci">✨</span><span>Home → Electronics → Phones → iPhone = Breadcrumb</span></div>
+          </div>
+          <div class="read-check" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <input type="checkbox" id="chk-breadcrumb" onchange="updateProgress()">
+            <label for="chk-breadcrumb">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+
+        <!-- Tooltip -->
+        <div class="comp-card" data-term="tooltip hint">
+          <div class="comp-card-head">
+            <div class="comp-card-icon" style="background:#e0e7ff">💭</div>
+            <div><h3>Tooltip</h3><div class="comp-bn">টুলটিপ / ইঙ্গিত</div></div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-row-item"><span class="ci">📌</span><span><strong>কাজ:</strong> Hover করলে ছোট helper text দেখায়</span></div>
+            <div class="comp-row-item"><span class="ci">📍</span><span><strong>ব্যবহার:</strong> Icon-এর উপর hover করলে কাজের বিবরণ</span></div>
+            <div class="comp-row-item"><span class="ci">✨</span><span>🌙 button-এ hover করো — "Dark/Light Toggle" দেখাচ্ছে = Tooltip</span></div>
+          </div>
+          <div class="read-check" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <input type="checkbox" id="chk-tooltip" onchange="updateProgress()">
+            <label for="chk-tooltip">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+
+        <!-- Badge -->
+        <div class="comp-card" data-term="badge label tag">
+          <div class="comp-card-head">
+            <div class="comp-card-icon" style="background:#fce7f3">🏷️</div>
+            <div><h3>Badge</h3><div class="comp-bn">ব্যাজ / লেবেল</div></div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-row-item"><span class="ci">📌</span><span><strong>কাজ:</strong> ছোট গোলাকার label দিয়ে count বা status দেখায়</span></div>
+            <div class="comp-row-item"><span class="ci">📍</span><span><strong>ব্যবহার:</strong> Notification count, "New" tag, "Hot" label</span></div>
+            <div class="comp-row-item"><span class="ci">✨</span><span>Facebook-এর bell icon-এ লাল ৩ = Badge</span></div>
+          </div>
+          <div class="read-check" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <input type="checkbox" id="chk-badge" onchange="updateProgress()">
+            <label for="chk-badge">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+
+        <!-- Toast -->
+        <div class="comp-card" data-term="toast notification snackbar">
+          <div class="comp-card-head">
+            <div class="comp-card-icon" style="background:#fef3c7">🍞</div>
+            <div><h3>Toast / Notification</h3><div class="comp-bn">টোস্ট / নোটিফিকেশন</div></div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-row-item"><span class="ci">📌</span><span><strong>কাজ:</strong> কোনে ভেসে ওঠা temporary success/error message</span></div>
+            <div class="comp-row-item"><span class="ci">📍</span><span><strong>ব্যবহার:</strong> "Saved!" ✅, "Error occurred" ❌</span></div>
+            <div class="comp-row-item"><span class="ci">✨</span><span>Toast pop up করে, কয়েক সেকেন্ড পরে মিলিয়ে যায়</span></div>
+          </div>
+          <div class="read-check" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <input type="checkbox" id="chk-toast" onchange="updateProgress()">
+            <label for="chk-toast">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="comp-card" data-term="progress bar loading">
+          <div class="comp-card-head">
+            <div class="comp-card-icon" style="background:#d1fae5">📊</div>
+            <div><h3>Progress Bar</h3><div class="comp-bn">প্রগ্রেস বার</div></div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-row-item"><span class="ci">📌</span><span><strong>কাজ:</strong> কাজ কতটুকু হলো সেটা visually দেখায়</span></div>
+            <div class="comp-row-item"><span class="ci">📍</span><span><strong>ব্যবহার:</strong> File download, Profile completion, Course progress</span></div>
+            <div class="comp-row-item"><span class="ci">✨</span><span>এই page-এর উপরের নীল bar = Progress Bar</span></div>
+          </div>
+          <div class="read-check" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <input type="checkbox" id="chk-progressbar" onchange="updateProgress()">
+            <label for="chk-progressbar">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div class="comp-card" data-term="spinner loader loading">
+          <div class="comp-card-head">
+            <div class="comp-card-icon" style="background:#ede9fe">⏳</div>
+            <div><h3>Loading Spinner</h3><div class="comp-bn">লোডিং স্পিনার</div></div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-row-item"><span class="ci">📌</span><span><strong>কাজ:</strong> Data load হওয়ার সময় ঘুরতে থাকা animation</span></div>
+            <div class="comp-row-item"><span class="ci">📍</span><span><strong>ব্যবহার:</strong> Page load, Button click করার পর</span></div>
+            <div class="comp-row-item"><span class="ci">✨</span><span>YouTube video buffer হলে যে ঘুরন্ত চিহ্ন = Spinner</span></div>
+          </div>
+          <div class="read-check" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <input type="checkbox" id="chk-spinner" onchange="updateProgress()">
+            <label for="chk-spinner">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+
+        <!-- Skeleton Loader -->
+        <div class="comp-card" data-term="skeleton loader placeholder">
+          <div class="comp-card-head">
+            <div class="comp-card-icon" style="background:#f3f4f6">💀</div>
+            <div><h3>Skeleton Loader</h3><div class="comp-bn">স্কেলেটন লোডার</div></div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-row-item"><span class="ci">📌</span><span><strong>কাজ:</strong> Content load হওয়ার আগে content-এর outline দেখায়</span></div>
+            <div class="comp-row-item"><span class="ci">📍</span><span><strong>ব্যবহার:</strong> Facebook feed, LinkedIn post loading</span></div>
+            <div class="comp-row-item"><span class="ci">✨</span><span>Spinner-এর চেয়ে বেশি professional — কঙ্কালের মতো shape দেখায়</span></div>
+          </div>
+          <div class="read-check" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <input type="checkbox" id="chk-skeleton" onchange="updateProgress()">
+            <label for="chk-skeleton">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div class="comp-card" data-term="dashboard admin panel">
+          <div class="comp-card-head">
+            <div class="comp-card-icon" style="background:#dbeafe">📊</div>
+            <div><h3>Dashboard</h3><div class="comp-bn">ড্যাশবোর্ড</div></div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-row-item"><span class="ci">📌</span><span><strong>কাজ:</strong> সব গুরুত্বপূর্ণ তথ্য একটি screen-এ overview</span></div>
+            <div class="comp-row-item"><span class="ci">📍</span><span><strong>ব্যবহার:</strong> Admin panel, Analytics, Business report</span></div>
+            <div class="comp-row-item"><span class="ci">✨</span><span>গাড়ির সামনের speedometer + fuel gauge = Dashboard</span></div>
+          </div>
+          <div class="read-check" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <input type="checkbox" id="chk-dashboard" onchange="updateProgress()">
+            <label for="chk-dashboard">✅ পড়া হয়েছে</label>
+          </div>
+        </div>
+
+      </div><!-- /compGrid -->
+    </div><!-- /body-sec3 -->
+  </div><!-- /sec3 -->
+
+  <!-- No results -->
+  <div class="no-results" id="noResults">
+    <div class="nr-icon">🔍</div>
+    <p>কোনো result পাওয়া যায়নি। অন্য keyword দিয়ে চেষ্টা করুন।</p>
+  </div>
+
+</div><!-- /main -->
+
+<!-- BACK TO TOP -->
+<button class="btt" id="bttBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">⬆ উপরে</button>
+
+<script>
+// ── THEME ─────────────────────────────────────────
+let dark = localStorage.getItem('pd-theme') === 'dark';
+function applyTheme() {
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  document.getElementById('themeBtn').textContent = dark ? '☀️' : '🌙';
+  localStorage.setItem('pd-theme', dark ? 'dark' : 'light');
+}
+applyTheme();
+function toggleTheme() { dark = !dark; applyTheme(); }
+
+// ── ACCORDION ─────────────────────────────────────
+function toggleSection(header) {
+  const isOpen = header.classList.contains('open');
+  header.classList.toggle('open');
+  const body = header.nextElementSibling;
+  body.classList.toggle('open');
+}
+function toggleTerm(card) {
+  card.classList.toggle('open');
+  // save to localStorage
+  saveProgress();
+}
+
+// ── PROGRESS ──────────────────────────────────────
+const TOTAL = 68;
+function updateProgress() {
+  const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+  document.getElementById('progressText').textContent = checked + ' / ' + TOTAL;
+  const pct = Math.round((checked / TOTAL) * 100);
+  document.getElementById('progressBar').style.width = pct + '%';
+  saveProgress();
+}
+function saveProgress() {
+  const state = {};
+  document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    state[cb.id] = cb.checked;
+  });
+  localStorage.setItem('pd-progress-p1', JSON.stringify(state));
+}
+function loadProgress() {
+  const saved = localStorage.getItem('pd-progress-p1');
+  if (!saved) return;
+  const state = JSON.parse(saved);
+  Object.keys(state).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.checked = state[id];
+  });
+  updateProgress();
+}
+loadProgress();
+
+// ── SEARCH ────────────────────────────────────────
+function doSearch(q) {
+  q = q.trim().toLowerCase();
+  const noRes = document.getElementById('noResults');
+  const allCards = document.querySelectorAll('.term-card, .comp-card');
+  const allSections = document.querySelectorAll('.section-header');
+  let found = 0;
+
+  if (!q) {
+    allCards.forEach(c => c.style.display = '');
+    allSections.forEach(s => s.style.display = '');
+    noRes.style.display = 'none';
+    // remove highlights
+    document.querySelectorAll('.hl').forEach(el => {
+      el.outerHTML = el.textContent;
+    });
+    return;
+  }
+
+  allCards.forEach(card => {
+    const term = (card.dataset.term || '').toLowerCase();
+    const text = card.textContent.toLowerCase();
+    if (term.includes(q) || text.includes(q)) {
+      card.style.display = '';
+      card.classList.add('open');
+      // open parent section
+      let parent = card.closest('.section-body');
+      if (parent) {
+        parent.classList.add('open');
+        parent.previousElementSibling && parent.previousElementSibling.classList.add('open');
+      }
+      found++;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  noRes.style.display = found === 0 ? 'block' : 'none';
+}
+
+// ── BACK TO TOP ───────────────────────────────────
+window.addEventListener('scroll', () => {
+  document.getElementById('bttBtn').classList.toggle('visible', window.scrollY > 400);
+});
+
+// ── JUMP MENU ACTIVE ──────────────────────────────
+const sections = ['sec1','sec2','sec3'];
+window.addEventListener('scroll', () => {
+  const jumpBtns = document.querySelectorAll('.jump-btn');
+  sections.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    if (rect.top <= 100 && rect.bottom >= 100) {
+      jumpBtns.forEach(b => b.classList.remove('active'));
+      jumpBtns[i] && jumpBtns[i].classList.add('active');
+    }
+  });
+});
+</script>
+<script>
+if ("serviceWorker" in navigator && location.protocol === "https:") {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js")
+      .then(() => console.log("SW registered"))
+      .catch(e => console.log("SW skipped:", e));
+  });
+}
+</script>
+</body>
+</html>
