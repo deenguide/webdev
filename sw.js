@@ -1,5 +1,5 @@
 // ── ProgramDict Service Worker v1.0 ──
-const CACHE_NAME = 'programdict-v2';
+const CACHE_NAME = 'programdict-v3';
 
 const ASSETS = [
   './',
